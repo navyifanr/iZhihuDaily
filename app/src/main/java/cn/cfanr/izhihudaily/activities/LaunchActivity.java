@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -30,6 +31,7 @@ import cn.cfanr.izhihudaily.utils.ScreenUtil;
  */
 public class LaunchActivity extends BaseActivity {
     private NetworkImageView mImageView;
+    private TextView tvAuthor;
     private ScreenUtil screenUtil;
     private ImageLoader imageLoader;
 
@@ -48,13 +50,14 @@ public class LaunchActivity extends BaseActivity {
     @Override
     public void initView() {
         mImageView=$(R.id.net_iv_launch_bg);
+        tvAuthor = $(R.id.tv_author);
     }
 
     @Override
     public void initEvent() {
         imageLoader = AppController.getInstance().getImageLoader();
-        mImageView.setDefaultImageResId(R.mipmap.splash_background);
-        mImageView.setErrorImageResId(R.mipmap.ic_launcher);
+        mImageView.setDefaultImageResId(R.mipmap.bg_launch);
+        mImageView.setErrorImageResId(R.mipmap.bg_launch);
         mImageView.postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -75,6 +78,7 @@ public class LaunchActivity extends BaseActivity {
                         String author=JsonTool.getObjString(response, "text");
                         String imgUrl=JsonTool.getObjString(response, "img");
                         mImageView.setImageUrl(imgUrl, imageLoader);
+                        tvAuthor.setText("By "+author);
                     }
                 }, new Response.ErrorListener() {
 
