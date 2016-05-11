@@ -37,7 +37,12 @@ public abstract class BaseActivity extends AppCompatActivity{
     }
 
     public String getClassMethodName(){
-        return this.getClass().getName()+Thread.currentThread().getStackTrace()[1].getMethodName();
+        try {
+            return this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[3].getMethodName();
+        }catch (Exception e){
+
+        }
+        return this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[0].getMethodName();
     }
 
 }

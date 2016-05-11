@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="150dp"
     android:id="@+id/rl_home_banner"
+    android:background="#1fdcdcdc"
     >
 
     <android.support.v4.view.ViewPager

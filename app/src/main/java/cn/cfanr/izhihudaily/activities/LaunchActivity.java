@@ -2,6 +2,7 @@ package cn.cfanr.izhihudaily.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -73,7 +74,9 @@ public class LaunchActivity extends BaseActivity {
                         String author=JsonTool.getObjString(response, "text");
                         String imgUrl=JsonTool.getObjString(response, "img");
                         mImageView.setImageUrl(imgUrl, imageLoader);
-                        tvAuthor.setText("By "+author);
+                        if(!TextUtils.isEmpty(author)) {
+                            tvAuthor.setText("By " + author);
+                        }
                     }
                 }, new Response.ErrorListener() {
 
@@ -81,7 +84,6 @@ public class LaunchActivity extends BaseActivity {
             public void onErrorResponse(VolleyError error) {
             }
         });
-
         // Adding request to request queue
         AppController.getInstance().addToRequestQueue(jsonObjReq, tagName);
     }
