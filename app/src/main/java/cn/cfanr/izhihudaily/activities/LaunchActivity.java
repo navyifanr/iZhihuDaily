@@ -2,15 +2,11 @@ package cn.cfanr.izhihudaily.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
-import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
@@ -56,12 +52,11 @@ public class LaunchActivity extends BaseActivity {
     @Override
     public void initEvent() {
         imageLoader = AppController.getInstance().getImageLoader();
-        mImageView.setDefaultImageResId(R.mipmap.bg_launch);
         mImageView.setErrorImageResId(R.mipmap.bg_launch);
         mImageView.postDelayed(new Runnable() {
             @Override
             public void run() {
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                startActivity(new Intent(getActivity(), HomeActivity.class));
                 finish();
             }
         }, 3000);

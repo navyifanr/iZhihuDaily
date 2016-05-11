@@ -15,6 +15,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import cn.cfanr.izhihudaily.model.NewsModel;
+
 /**
  * @author xifan
  * @time 2016/5/4
@@ -127,5 +129,18 @@ public class JsonTool {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static List<NewsModel> jsonToNewsModelList(String jsonStr){
+        try {
+            Gson gson = new Gson();
+            Type type = new TypeToken<List<NewsModel>>() {
+            }.getType();
+            List<NewsModel> jsonBean = gson.fromJson(jsonStr, type);
+            return jsonBean;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

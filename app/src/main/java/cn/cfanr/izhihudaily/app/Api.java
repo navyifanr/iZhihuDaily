@@ -15,5 +15,10 @@ public class Api {
      */
     public static String url_launch=host+"api/4/start-image/";
 
+    //最新消息
+    public static String url_latest_news=host+"api/4/news/latest";
+
+    //过往消息
+    public static String url_before_news=host+"api/4/news/before/%s";
 
 }
