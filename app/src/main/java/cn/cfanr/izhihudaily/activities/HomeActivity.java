@@ -1,5 +1,6 @@
 package cn.cfanr.izhihudaily.activities;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,7 @@ import cn.cfanr.izhihudaily.model.HomeType;
 import cn.cfanr.izhihudaily.model.NewsModel;
 import cn.cfanr.izhihudaily.utils.DateTimeUtils;
 import cn.cfanr.izhihudaily.utils.JsonTool;
+import cn.cfanr.izhihudaily.utils.ScreenUtil;
 
 public class HomeActivity extends BaseActivity {
     private Toolbar mToolbar;
@@ -53,6 +55,10 @@ public class HomeActivity extends BaseActivity {
     public void initView() {
         mToolbar=$(R.id.toolbar);
         mToolbar.setTitle("首页");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            mToolbar.getLayoutParams().height = new ScreenUtil().getAppBarHeight();
+            mToolbar.setPadding(mToolbar.getPaddingLeft(), new ScreenUtil().getStatusBarHeight(), mToolbar.getPaddingRight(), mToolbar.getPaddingBottom());
+        }
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu);

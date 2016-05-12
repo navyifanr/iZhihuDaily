@@ -58,4 +58,17 @@ public class ScreenUtil {
 		float scale = context.getResources().getDisplayMetrics().density;
 		return (int) (pxValue / scale + 0.5f);
 	}
+
+	public int getAppBarHeight() {
+		return dip2px(56)+getStatusBarHeight();
+	}
+
+	public int getStatusBarHeight() {
+		int result = 0;
+		int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+		if (resourceId > 0) {
+			result = context.getResources().getDimensionPixelSize(resourceId);
+		}
+		return result;
+	}
 }
