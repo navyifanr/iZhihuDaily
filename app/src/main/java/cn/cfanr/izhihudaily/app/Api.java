@@ -21,4 +21,12 @@ public class Api {
     //过往消息
     public static String url_before_news=host+"api/4/news/before/%s";
 
+    //文章内容详情
+    public static String url_article_content=host+"api/4/news/%s";
+
+    //主题列表
+    public static String url_themes_list=host+"api/4/themes";
+
+    //主题日报列表数据
+    public static String url_theme_list_data=host+"api/4/theme/%s";
 }

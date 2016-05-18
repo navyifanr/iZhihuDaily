@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,10 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.cfanr.izhihudaily.R;
-import cn.cfanr.izhihudaily.activities.ContentActivity;
+import cn.cfanr.izhihudaily.activities.ArticleActivity;
 import cn.cfanr.izhihudaily.adapter.ImageAdapter;
 import cn.cfanr.izhihudaily.model.HomeModel;
 import cn.cfanr.izhihudaily.model.NewsModel;
+import cn.cfanr.izhihudaily.utils.ImageUtils;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 
 /**
@@ -48,10 +50,12 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
     Context context;
     ScreenUtil screenUtil;
     RelativeLayout rlItem;
+    ImageView ivIntro;
     ViewPager mViewPager;
     LinearLayout llDots;
     TextView tvTitle;
     List<NewsModel> bannerList;
+    ArrayList<String> articleIdList=new ArrayList<>();
     ImageAdapter imgAdapter;
     int currentItem=0;
     private int preDotPosition = 0; //上一个被选中的小圆点的索引，默认值为0
@@ -89,6 +93,7 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
         super(itemView);
         this.context=context;
         rlItem=$(itemView, R.id.rl_home_banner);
+        ivIntro=$(itemView, R.id.iv_home_banner_img);
         mViewPager=$(itemView, R.id.view_pager_home_banner_img);
         llDots=$(itemView, R.id.ll_home_banner_dots);
         tvTitle=$(itemView, R.id.tv_home_banner_title);
@@ -106,6 +111,8 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
         final int length= bannerList.size();
         if(length==1&&llDots.getChildCount()==0){
             mViewPager.setVisibility(View.GONE);
+            ivIntro.setVisibility(View.VISIBLE);
+            ImageUtils.loadImage(ivIntro, bannerList.get(0).getImages().get(0));
             setPagerItemData(0);
             View dot = getDotView();
             llDots.addView(dot);
@@ -117,11 +124,12 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
             return;
         }
         if(imgAdapter==null){   //避免重复初始化ViewPager和addView
-            for(int i=0; i<length; i++){
-                NewsModel newsModel = bannerList.get(i);
+            for(int index=0; index<length; index++){
+                NewsModel newsModel = bannerList.get(index);
                 imgStrList.add(newsModel.getImage());
                 View dot = getDotView();
                 llDots.addView(dot); // 向线性布局中添加"点"
+                articleIdList.add(newsModel.getId());
             }
             llDots.getChildAt(0).setEnabled(true);
             imgAdapter=new ImageAdapter(context, imgStrList);
@@ -168,9 +176,9 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
             imgAdapter.setOnItemClickListener(new ImageAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    String articleId= bannerList.get(position).getId();
-                    Intent intent = new Intent(context, ContentActivity.class);
-                    intent.putExtra("articleId", articleId);
+                    Intent intent = new Intent(context, ArticleActivity.class);
+                    intent.putExtra("position", position);
+                    intent.putStringArrayListExtra("articleIdList", articleIdList);
                     context.startActivity(intent);
                 }
             });

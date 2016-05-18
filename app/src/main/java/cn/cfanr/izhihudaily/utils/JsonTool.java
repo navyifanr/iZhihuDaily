@@ -10,6 +10,7 @@ import org.json.JSONObject;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -131,16 +132,36 @@ public class JsonTool {
         return null;
     }
 
-    public static List<NewsModel> jsonToNewsModelList(String jsonStr){
-        try {
-            Gson gson = new Gson();
-            Type type = new TypeToken<List<NewsModel>>() {
-            }.getType();
-            List<NewsModel> jsonBean = gson.fromJson(jsonStr, type);
+    /**
+     * 将json通过类型转换成对象
+     * @param json  json字符串
+     * @return 返回对象, 失败返回NULL
+     */
+    public static <T> T jsonToObj(String json, Class<T> clazz) {
+        try{
+            Gson gson=new Gson();
+            T jsonBean=gson.fromJson(json, clazz);
             return jsonBean;
-        } catch (Exception e) {
+        }catch(Exception e){
             e.printStackTrace();
-            return null;
         }
+        return null;
+    }
+
+    /**
+     * 将json通过类型转换为对象的List
+     * @param json json字符串
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> jsonToObjList(String json, Class<T[]> clazz){
+        try{
+            Gson gson=new Gson();
+            T[] jsonBeans=gson.fromJson(json, clazz);
+            return Arrays.asList(jsonBeans);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 }

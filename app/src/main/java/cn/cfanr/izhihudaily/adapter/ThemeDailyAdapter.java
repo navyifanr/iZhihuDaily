@@ -13,25 +13,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.cfanr.izhihudaily.R;
-import cn.cfanr.izhihudaily.model.HomeModel;
-import cn.cfanr.izhihudaily.model.HomeType;
 import cn.cfanr.izhihudaily.model.NewsModel;
+import cn.cfanr.izhihudaily.model.ThemeDailyModel;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
-import cn.cfanr.izhihudaily.view.viewholder.BannerHolder;
+import cn.cfanr.izhihudaily.view.viewholder.ThemeDailyHeader;
 
 /**
  * @author xifan
- * @time 2016/5/5
- * @desc
+ * @time 2016/5/18
+ * @desc 主题日报-适配器
  */
-public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class ThemeDailyAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private LayoutInflater mLayoutInflater;
     private Context context;
-    private List<HomeModel> homeModelList=new ArrayList<>();
+    private List<ThemeDailyModel> themeDailyModelList=new ArrayList<>();
 
-    public HomeAdapter(Context context, List<HomeModel> homeModelList){
+    public ThemeDailyAdapter(Context context, List<ThemeDailyModel> themeDailyModelList){
         this.context=context;
-        this.homeModelList=homeModelList;
+        this.themeDailyModelList=themeDailyModelList;
         mLayoutInflater=LayoutInflater.from(context);
     }
 
@@ -47,11 +46,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if(viewType== HomeType.BANNER_ITEM){
-            return new BannerHolder(context, mLayoutInflater.inflate(R.layout.item_home_banner, parent, false));
-        }else if(viewType==HomeType.TITLE_ITEM){
-            return new TitleHolder(mLayoutInflater.inflate(R.layout.item_home_title, parent, false));
-        }else if(viewType==HomeType.NEWS_ITEM){
+        if(viewType== ThemeDailyModel.THEME_DAILY_HEADER){
+            return new ThemeDailyHeader(context, mLayoutInflater.inflate(R.layout.item_theme_daily_header, parent, false));
+        }else  if(viewType==ThemeDailyModel.THEME_DAILY_NEWS){
             return new NewsHolder(mLayoutInflater.inflate(R.layout.item_home_news, parent, false));
         }
         throw new RuntimeException("there is no type that matches the type " + viewType + " make sure your using types correctly");
@@ -59,17 +56,17 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-        HomeModel homeModel=homeModelList.get(position);
-        if(holder instanceof BannerHolder){
-            ((BannerHolder) holder).setViewPager(homeModel);
-        }else if(holder instanceof TitleHolder){
-            ((TitleHolder) holder).tvTitle.setText(homeModel.getDate());
-        }else if(holder instanceof NewsHolder){
-            NewsModel newsModel=homeModel.getNewsModel();
+        ThemeDailyModel themeDailyModel=themeDailyModelList.get(position);
+        if(holder instanceof ThemeDailyHeader){
+            ((ThemeDailyHeader) holder).refreshUI(themeDailyModel);
+        }else  if(holder instanceof NewsHolder){
+            NewsModel newsModel=themeDailyModel.getNewsModel();
             ((NewsHolder) holder).tvTitle.setText(newsModel.getTitle());
             List<String> imgList=newsModel.getImages();
             if(imgList!=null&&imgList.size()>0) {
                 ImageUtils.loadImage(((NewsHolder) holder).mImg, newsModel.getImages().get(0));
+            }else{
+                ((NewsHolder) holder).mImg.setVisibility(View.GONE);
             }
             if (mOnItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
@@ -85,20 +82,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public int getItemCount() {
-        return homeModelList.size();
+        return themeDailyModelList.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return homeModelList.get(position).getType();
-    }
-
-    class TitleHolder extends RecyclerView.ViewHolder{
-        TextView tvTitle;
-        public TitleHolder(View itemView) {
-            super(itemView);
-            tvTitle=$(itemView, R.id.tv_home_title);
-        }
+        return themeDailyModelList.get(position).getType();
     }
 
     class NewsHolder extends RecyclerView.ViewHolder{

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="104dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:foreground="?android:attr/selectableItemBackground"
     android:layout_marginLeft="@dimen/spacing_small"
     android:layout_marginRight="@dimen/spacing_small"
@@ -24,7 +25,7 @@
             android:layout_height="80dp"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
-            android:src="@mipmap/ic_launcher"
+            tools:src="@mipmap/ic_launcher"
             />
 
         <TextView
@@ -38,7 +39,7 @@
             android:textSize="@dimen/font_size_big_x"
             android:textColor="@color/black"
             android:ellipsize="end"
-            android:text="this is a test, this is a test, this is a test, this is a test, this is a test, this is a test,this is a test, this is a test, this is a test, this is a test, this is a test,  "
+            tools:text="this is a test, this is a test, this is a test, this is a test, this is a test, this is a test,this is a test, this is a test, this is a test, this is a test, this is a test,  "
             />
 
     </RelativeLayout>

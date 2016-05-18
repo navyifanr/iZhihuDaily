@@ -10,7 +10,7 @@ import cn.cfanr.izhihudaily.app.AppController;
 /**
  * @author xifan
  * @time 2016/5/6
- * @desc 图片
+ * @desc 图片加载工具类
  */
 public class ImageUtils {
 
