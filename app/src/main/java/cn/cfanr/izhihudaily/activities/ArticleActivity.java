@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +50,15 @@ public class ArticleActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mViewPager=$(R.id.view_pager_article);
+        mViewPager.post(new Runnable() {
+            @Override
+            public void run() {
+                int statusBarHeight=new ScreenUtil(getActivity()).getStatusBarHeight();
+                ViewGroup.MarginLayoutParams params= (ViewGroup.MarginLayoutParams) mViewPager.getLayoutParams();
+                params.setMargins(0, statusBarHeight, 0, 0);
+                mViewPager.setLayoutParams(params);
+            }
+        });
         mViewPager.addOnPageChangeListener(new PageChangeListener());
     }
 

@@ -13,21 +13,24 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activities.LaunchActivity"
-            android:theme="@style/LaunchTheme"
             android:screenOrientation="portrait"
-            >
+            android:theme="@style/LaunchTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.HomeActivity"
-            android:screenOrientation="portrait"
-            />
-        <activity android:name=".activities.ArticleActivity"
-            android:screenOrientation="portrait"
-            />
+        <activity
+            android:name=".activities.HomeActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.ArticleActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activities.EditorsListBarActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".activities.WebViewBarActivity"></activity>
     </application>
 
 </manifest>

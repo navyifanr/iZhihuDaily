@@ -16,8 +16,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import cn.cfanr.izhihudaily.model.NewsModel;
-
 /**
  * @author xifan
  * @time 2016/5/4
@@ -163,5 +161,37 @@ public class JsonTool {
             e.printStackTrace();
         }
         return null;
+    }
+
+    /**
+     * 将对象转换为json的字符串
+     * @param obj
+     * @param <T>
+     * @return
+     */
+    public static <T> String objToJsonStr(T obj){
+        try{
+            Gson gson=new Gson();
+            return gson.toJson(obj);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
+    }
+
+    /**
+     * 将List<Object>转换为json的字符串
+     * @param list
+     * @param <T>
+     * @return
+     */
+    public static <T> String objListToJsonStr(List<T> list){
+        try {
+            Gson gson = new Gson();
+            return gson.toJson(list);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return "";
     }
 }

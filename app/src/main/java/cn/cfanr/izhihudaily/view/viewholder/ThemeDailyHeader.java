@@ -1,6 +1,7 @@
 package cn.cfanr.izhihudaily.view.viewholder;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +14,12 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.cfanr.izhihudaily.R;
+import cn.cfanr.izhihudaily.activities.EditorsListBarActivity;
 import cn.cfanr.izhihudaily.adapter.BaseRecyclerAdapter;
 import cn.cfanr.izhihudaily.model.EditorModel;
 import cn.cfanr.izhihudaily.model.ThemeDailyModel;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
+import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 
 /**
@@ -53,7 +56,7 @@ public class ThemeDailyHeader extends RecyclerView.ViewHolder{
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context);
         mLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        List<EditorModel> editorModelList=themeDailyModel.getEditorModelList();
+        final List<EditorModel> editorModelList=themeDailyModel.getEditorModelList();
         mRecyclerView.setAdapter(mAdapter=new BaseRecyclerAdapter<EditorModel>(mRecyclerView, editorModelList, R.layout.item_theme_editor_avatar) {
             @Override
             public void convert(RecyclerHolder holder, EditorModel editorModel, int position, boolean isScrolling) {
@@ -64,7 +67,10 @@ public class ThemeDailyHeader extends RecyclerView.ViewHolder{
         mAdapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, Object data, int position) {
-
+                String editorsJson= JsonTool.objListToJsonStr(editorModelList);
+                Intent intent=new Intent(context, EditorsListBarActivity.class);
+                intent.putExtra("editorsJson", editorsJson);
+                context.startActivity(intent);
             }
         });
     }

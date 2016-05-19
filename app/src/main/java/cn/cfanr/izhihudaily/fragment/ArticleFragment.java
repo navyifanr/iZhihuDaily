@@ -2,7 +2,6 @@ package cn.cfanr.izhihudaily.fragment;
 
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -28,7 +26,6 @@ import java.util.Map;
 import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.app.Api;
 import cn.cfanr.izhihudaily.app.AppController;
-import cn.cfanr.izhihudaily.utils.DateTimeUtils;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
 import cn.cfanr.izhihudaily.utils.JsonTool;
 
