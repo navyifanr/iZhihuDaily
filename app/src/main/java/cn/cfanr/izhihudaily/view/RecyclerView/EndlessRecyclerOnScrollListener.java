@@ -11,7 +11,7 @@ import android.view.View;
  * @time 2016/5/11
  * @desc 继承自RecyclerView.OnScrollListener，可以监听到是否滑动到页面最低部
  */
-public class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener implements OnListLoadNextPageListener {
+public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener implements OnListLoadNextPageListener {
 
     /**
      * 当前RecyclerView类型
@@ -100,8 +100,7 @@ public class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListen
     }
 
     @Override
-    public void onLoadNextPage(final View view) {
-    }
+    public abstract void onLoadNextPage(final View view);
 
     public static enum LayoutManagerType {
         LinearLayout,

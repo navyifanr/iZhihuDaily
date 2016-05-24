@@ -6,7 +6,7 @@ import android.webkit.WebView;
 import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.base.BaseBarActivity;
 
-public class WebViewBarActivity extends BaseBarActivity {
+public class WebViewActivity extends BaseBarActivity {
     private WebView mWebView;
 
     @Override

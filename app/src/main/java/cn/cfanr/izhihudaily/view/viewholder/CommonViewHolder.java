@@ -2,6 +2,7 @@ package cn.cfanr.izhihudaily.view.viewholder;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.text.Spanned;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,12 @@ public class CommonViewHolder {
     public CommonViewHolder setText(int viewId, String text) {
         TextView view = getView(viewId);
         view.setText(text);
+        return this;
+    }
+
+    public CommonViewHolder setText(int viewId, Spanned spanned) {
+        TextView view = getView(viewId);
+        view.setText(spanned);
         return this;
     }
 

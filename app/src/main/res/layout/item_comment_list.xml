@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/margin_left_right_normal"
+    android:paddingRight="@dimen/margin_left_right_normal"
+    android:paddingTop="@dimen/spacing_normal"
+    android:paddingBottom="@dimen/spacing_small"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <cn.cfanr.izhihudaily.view.CircleImageView
+        android:id="@+id/circle_iv_comment_avatar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        tools:src="@mipmap/ic_avatar"
+        />
+
+    <TextView
+        android:id="@+id/tv_comment_author"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:layout_toRightOf="@id/circle_iv_comment_avatar"
+        tools:text="Navy"
+        android:textSize="@dimen/font_size_normal"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        />
+
+    <TextView
+        android:id="@+id/tv_comment_like"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/spacing_tiny"
+        tools:text="9"
+        android:drawablePadding="@dimen/spacing_tiny"
+        android:drawableLeft="@mipmap/ic_comment_vote"
+        />
+
+    <TextView
+        android:id="@+id/tv_comment_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/circle_iv_comment_avatar"
+        android:layout_below="@id/tv_comment_author"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:textSize="@dimen/font_size_normal"
+        tools:text="其实恰恰错了，于是从来都不是大众的，也从来不是为大众服务的，艺术家和艺术的受众群体从来都是小众而精英的。而且艺术也不仅仅是表现美和生命力，如毕加索的名画格尔尼卡，换言之艺术家不需要博得大众的眼球，也不需要依靠大众的支持生活，如果真的有一位完全为人民服务的艺术家那他的作品的艺术价值也一定很有限。"
+        />
+
+    <TextView
+        android:id="@+id/tv_comment_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_comment_content"
+        android:layout_toRightOf="@id/circle_iv_comment_avatar"
+        android:layout_marginTop="@dimen/spacing_normal"
+        tools:text="05-22 18:00"
+        />
+
+    <TextView
+        android:id="@+id/tv_comment_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginTop="@dimen/spacing_normal"
+        android:paddingLeft="@dimen/spacing_tiny"
+        android:paddingRight="@dimen/spacing_tiny"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:layout_below="@id/tv_comment_content"
+        android:text="收起"
+        android:background="@color/gray_light"
+        android:visibility="invisible"
+        />
+
+</RelativeLayout>

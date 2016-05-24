@@ -9,20 +9,32 @@
         <!--android:layout_height="match_parent"-->
         <!--&gt;-->
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
             >
             <View
+                android:id="@+id/view_bar"
                 android:layout_width="match_parent"
                 android:layout_height="?actionBarSize"
                 android:background="@android:color/transparent"
                 />
+
+            <!--WebView头部会留部分空白给图片栏-->
+            <WebView
+                android:id="@+id/web_view_article"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/view_bar"
+                android:background="@android:color/transparent"
+                />
+
             <RelativeLayout
                 android:id="@+id/rl_article_top_img"
                 android:layout_width="match_parent"
-                android:layout_height="140dp">
+                android:layout_height="140dp"
+                android:layout_below="@id/view_bar"
+                >
 
                 <ImageView
                     android:id="@+id/iv_article_image"
@@ -55,13 +67,7 @@
                     android:textColor="@color/white"
                     />
             </RelativeLayout>
-
-            <WebView
-                android:id="@+id/web_view_article"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                />
-        </LinearLayout>
+        </RelativeLayout>
 
     <!--</FrameLayout>-->
 

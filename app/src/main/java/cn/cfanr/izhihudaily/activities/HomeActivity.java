@@ -3,8 +3,10 @@ package cn.cfanr.izhihudaily.activities;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -43,6 +45,7 @@ import cn.cfanr.izhihudaily.utils.DateTimeUtils;
 import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 import cn.cfanr.izhihudaily.view.NoScrollListView;
+import cn.cfanr.izhihudaily.view.RecyclerView.EndlessRecyclerOnScrollListener;
 import cn.cfanr.izhihudaily.view.viewholder.CommonViewHolder;
 
 public class HomeActivity extends BaseActivity {
@@ -51,6 +54,7 @@ public class HomeActivity extends BaseActivity {
     private LinearLayout llHome;
     private NoScrollListView mListView;
     private Toolbar mToolbar;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
     private RecyclerView mRecyclerView;
 
     private List<NewsModel> bannerList=new ArrayList<>();
@@ -68,9 +72,10 @@ public class HomeActivity extends BaseActivity {
     private ThemeDailyAdapter themeDailyAdapter;
     private ArrayList<String> themeArticleIdList=new ArrayList<>();
 
-    private int dayNum=0;  //首页n天前的数据
-    private int nonNewsListNum=0;  //不是文章列表的item数量
-    private String lastNewsId="0";  //最后一条文章的id
+    private int themeId=-1;  //-1表示首页，其他为主题项
+    private int dayNum=0;  //【首页】n天前的数据，0为当天
+    private int nonNewsListNum=0;  //【首页】不是文章列表的item数量
+    private String lastNewsId="0";  //【主题项】最后一条文章的id
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,7 +93,8 @@ public class HomeActivity extends BaseActivity {
         mToolbar.setTitle("首页");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             mToolbar.getLayoutParams().height = new ScreenUtil().getAppBarHeight();
-            mToolbar.setPadding(mToolbar.getPaddingLeft(), new ScreenUtil().getStatusBarHeight(), mToolbar.getPaddingRight(), mToolbar.getPaddingBottom());
+            mToolbar.setPadding(mToolbar.getPaddingLeft(), new ScreenUtil().getStatusBarHeight(),
+                    mToolbar.getPaddingRight(), mToolbar.getPaddingBottom());
         }
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -101,6 +107,9 @@ public class HomeActivity extends BaseActivity {
         llHome=$(R.id.ll_drawer_content_home);
         mListView=$(R.id.lv_drawer_content_list);
         mRecyclerView=$(R.id.recyclerView);
+        mSwipeRefreshLayout=$(R.id.swipe_refresh_home);
+        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_green_dark,
+                android.R.color.holo_blue_dark, android.R.color.holo_orange_dark);
     }
 
     @Override
@@ -132,10 +141,40 @@ public class HomeActivity extends BaseActivity {
         llHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSelectItem(-1, -1);
+                setContentType(true);
+                setSelectItem(-1, themeId);
             }
         });
         loadDrawerList();
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        dayNum=0;
+                        lastNewsId="0";
+                        loadHomeData(themeId, 0, "0");
+                        mSwipeRefreshLayout.setRefreshing(false);
+                    }
+                }, 1200);
+            }
+        });
+        mRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener() {
+            @Override
+            public void onLoadNextPage(View view) {
+                if(themeId==-1){
+                    dayNum++;
+                }else{
+                    int length=themeArticleIdList.size();
+                    lastNewsId=themeArticleIdList.get(length-1);
+                }
+                loadHomeData(themeId, dayNum, lastNewsId);
+            }
+        });
+
+        setDoubleClickBarToTop(mToolbar, mRecyclerView);
     }
 
     private void setDrawerMenu() {
@@ -148,7 +187,8 @@ public class HomeActivity extends BaseActivity {
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int themeId=themeModelList.get(position).getId();
+                setContentType(false);
+                themeId=themeModelList.get(position).getId();
                 setSelectItem(position, themeId);
             }
         });
@@ -168,6 +208,14 @@ public class HomeActivity extends BaseActivity {
 
     public void setTitle(CharSequence title) {
         getSupportActionBar().setTitle(title);
+    }
+
+    public void setContentType(boolean isHomeType){
+        if(isHomeType){
+            themeId=-1;
+        }
+        dayNum=0;
+        lastNewsId="0";
     }
 
     /**
@@ -231,6 +279,7 @@ public class HomeActivity extends BaseActivity {
         if(dayNum==0&&homeModelList!=null&&homeModelList.size()>0){
             homeModelList.clear();
             articleIdList.clear();
+            mRecyclerView.setAdapter(mAdapter);
         }
         if(bannerList!=null){
             HomeModel bannerItem=new HomeModel();
@@ -240,6 +289,11 @@ public class HomeActivity extends BaseActivity {
             nonNewsListNum++;
         }
         if(!TextUtils.isEmpty(title)){
+            if(dayNum==0){
+                title="今日热闻";
+            }else{
+                title=DateTimeUtils.convertDateTxt(title);
+            }
             HomeModel titleItem=new HomeModel();
             titleItem.setDate(title);
             titleItem.setType(HomeType.TITLE_ITEM);
@@ -257,14 +311,15 @@ public class HomeActivity extends BaseActivity {
             }
         }
         mAdapter.notifyDataSetChanged();
-        mRecyclerView.removeAllViewsInLayout();
-        mRecyclerView.setAdapter(mAdapter);
     }
 
     private void setThemeDailyData(String description, String background, List<EditorModel> editorModelList, List<NewsModel> themeNewsList) {
-        if(TextUtils.equals(lastNewsId, "0")&&themeDailyModelList!=null&&themeDailyModelList.size()>0){
-            themeDailyModelList.clear();
-            themeArticleIdList.clear();
+        if(TextUtils.equals(lastNewsId, "0")){       //为0表示第一次加载
+            if(themeDailyModelList!=null&&themeDailyModelList.size()>0) {
+                themeDailyModelList.clear();
+                themeArticleIdList.clear();
+            }
+            mRecyclerView.setAdapter(themeDailyAdapter);  //只有第一次加载才设置适配器
         }
         if(!TextUtils.isEmpty(background)&&!TextUtils.isEmpty(description)){
             ThemeDailyModel headerItem=new ThemeDailyModel();
@@ -285,8 +340,6 @@ public class HomeActivity extends BaseActivity {
             }
         }
         themeDailyAdapter.notifyDataSetChanged();
-        mRecyclerView.removeAllViewsInLayout();
-        mRecyclerView.setAdapter(themeDailyAdapter);
     }
 
     public void loadDrawerList(){

@@ -1,35 +1,56 @@
 package cn.cfanr.izhihudaily.activities;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 
 import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.adapter.ArticlePagerAdapter;
+import cn.cfanr.izhihudaily.app.Api;
+import cn.cfanr.izhihudaily.app.AppController;
 import cn.cfanr.izhihudaily.base.BaseActivity;
 import cn.cfanr.izhihudaily.fragment.ArticleFragment;
+import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
+import cn.cfanr.izhihudaily.utils.ToastUtils;
 
 public class ArticleActivity extends BaseActivity {
     private Toolbar mToolbar;
+    private ImageView ivShare, ivCollect, ivComment, ivLike;
+    private TextView tvComment, tvLike;
+
     private ViewPager mViewPager;
     private ArticlePagerAdapter mAdapter;
     private List<Fragment> fragmentList=new ArrayList<>();
     private int position=0;
     private ArrayList<String> articleIdList=new ArrayList<>();
 
+    private String articleId;
+    private String commentsNum;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setupMenu();
     }
 
     @Override
@@ -74,6 +95,7 @@ public class ArticleActivity extends BaseActivity {
         Bundle bundle=getIntent().getExtras();
         position=bundle.getInt("position",0);
         articleIdList=bundle.getStringArrayList("articleIdList");
+        articleId=articleIdList.get(position);
         int length=articleIdList.size();
         for(int index=0;index<length;index++){
             ArticleFragment articleFragment=ArticleFragment.newInstance(articleIdList.get(index));
@@ -84,26 +106,75 @@ public class ArticleActivity extends BaseActivity {
         mViewPager.setCurrentItem(position, false);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_article, menu);
-        return true;
+    private void setupMenu() {
+        ivShare=$(R.id.iv_article_share);
+        ivCollect=$(R.id.iv_article_collect);
+        ivComment=$(R.id.iv_article_comment);
+        tvComment=$(R.id.tv_article_comment);
+        ivLike=$(R.id.iv_article_like);
+        tvLike=$(R.id.tv_article_like);
+
+        loadArticleExtraData(articleId);
+
+        OnMenuItemClickListener onMenuItemClickListener=new OnMenuItemClickListener();
+        ivShare.setOnClickListener(onMenuItemClickListener);
+        ivCollect.setOnClickListener(onMenuItemClickListener);
+        ivComment.setOnClickListener(onMenuItemClickListener);
+        ivLike.setOnClickListener(onMenuItemClickListener);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-        switch (id) {
-            case R.id.action_share:
-                break;
-            case R.id.action_collect:
-                break;
-            case R.id.action_comment:
-                break;
-            case R.id.action_like:
-                break;
+    private void loadArticleExtraData(String articleId){
+        String tagName=getClassMethodName();
+        String url=String.format(Api.url_article_extra_data, articleId);
+        JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, null,
+                new Response.Listener<JSONObject>() {
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Map<String, Object> resultMap= JsonTool.parseJson2Map(response.toString());
+                        if(resultMap!=null){
+                            commentsNum=JsonTool.mapObjVal2Str(resultMap, "comments");
+                            String likesNum=JsonTool.mapObjVal2Str(resultMap, "popularity");
+                            if(!TextUtils.isEmpty(commentsNum)&&!TextUtils.equals(commentsNum, "0")){
+                                tvComment.setText(commentsNum);
+                            }
+                            if(!TextUtils.isEmpty(likesNum)&&!TextUtils.equals(likesNum, "0")){
+                                tvLike.setText(likesNum);
+                            }
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        });
+        AppController.getInstance().addToRequestQueue(jsonObjReq, tagName);
+    }
+
+    class OnMenuItemClickListener implements View.OnClickListener{
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()){
+                case R.id.iv_article_share:
+                    break;
+                case R.id.iv_article_collect:
+                    break;
+                case R.id.iv_article_comment:
+                    if(TextUtils.equals(commentsNum, "0")){
+                        ToastUtils.show("暂无评论！");
+                        return;
+                    }
+                    Intent intent=new Intent(getActivity(), CommentActivity.class);
+                    intent.putExtra("commentsNum", commentsNum);
+                    intent.putExtra("articleId", articleId);
+                    startActivity(intent);
+                    break;
+                case R.id.iv_article_like:
+                    break;
+            }
         }
-        return super.onOptionsItemSelected(item);
     }
 
     class PageChangeListener implements ViewPager.OnPageChangeListener {

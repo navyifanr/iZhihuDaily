@@ -24,9 +24,19 @@ public class Api {
     //文章内容详情
     public static String url_article_content=host+"api/4/news/%s";
 
+    //文章额外信息（评论和点赞数）
+    public static String url_article_extra_data=host+"api/4/story-extra/%s";
+
+    //文章评论列表的长评论
+    public static String url_article_long_comments=host+"api/4/story/%s/long-comments";
+
+    //文章评论列表的短评论
+    public static String url_article_short_comments=host+"api/4/story/%s/short-comments";
+
     //主题列表
     public static String url_themes_list=host+"api/4/themes";
 
     //主题日报列表数据
     public static String url_theme_list_data=host+"api/4/theme/%s";
+
 }

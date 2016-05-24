@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import cn.cfanr.izhihudaily.R;
-import cn.cfanr.izhihudaily.activities.EditorsListBarActivity;
+import cn.cfanr.izhihudaily.activities.EditorsListActivity;
 import cn.cfanr.izhihudaily.adapter.BaseRecyclerAdapter;
 import cn.cfanr.izhihudaily.model.EditorModel;
 import cn.cfanr.izhihudaily.model.ThemeDailyModel;
@@ -68,7 +68,7 @@ public class ThemeDailyHeader extends RecyclerView.ViewHolder{
             @Override
             public void onItemClick(View view, Object data, int position) {
                 String editorsJson= JsonTool.objListToJsonStr(editorModelList);
-                Intent intent=new Intent(context, EditorsListBarActivity.class);
+                Intent intent=new Intent(context, EditorsListActivity.class);
                 intent.putExtra("editorsJson", editorsJson);
                 context.startActivity(intent);
             }

@@ -1,4 +1,17 @@
 apply plugin: 'com.android.application'
+apply plugin: 'checkstyle'
+apply plugin: 'realm-android'
+
+task checkstyle(type: Checkstyle) {
+    source 'src'
+    include '**/*.java'
+    exclude '**/gen/**'
+    exclude '**/R.java'
+    exclude '**/BuildConfig.java'
+    configFile new File(rootDir, "checkstyle.xml")
+    // empty classpath
+    classpath = files()
+}
 
 android {
     compileSdkVersion 23

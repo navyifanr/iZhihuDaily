@@ -147,7 +147,7 @@ public class JsonTool {
     }
 
     /**
-     * 将json通过类型转换为对象的List
+     * 将json通过类型转换为对象的List（不过此方法，不适用于解析list外层有filed的json字符串）
      * @param json json字符串
      * @param <T>
      * @return

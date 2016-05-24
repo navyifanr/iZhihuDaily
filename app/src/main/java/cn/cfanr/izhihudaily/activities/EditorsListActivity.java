@@ -15,7 +15,7 @@ import cn.cfanr.izhihudaily.model.EditorModel;
 import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.view.viewholder.RecyclerHolder;
 
-public class EditorsListBarActivity extends BaseBarActivity {
+public class EditorsListActivity extends BaseBarActivity {
     private RecyclerView mRecyclerView;
     private BaseRecyclerAdapter mAdapter;
 
@@ -55,7 +55,7 @@ public class EditorsListBarActivity extends BaseBarActivity {
             @Override
             public void onItemClick(View view, Object data, int position) {
                 String webUrl=editorModelList.get(position).getUrl();
-                Intent intent=new Intent(getActivity(), WebViewBarActivity.class);
+                Intent intent=new Intent(getActivity(), WebViewActivity.class);
                 intent.putExtra("webUrl", webUrl);
                 startActivity(intent);
             }

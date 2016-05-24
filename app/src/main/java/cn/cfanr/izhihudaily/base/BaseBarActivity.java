@@ -17,7 +17,6 @@ import cn.cfanr.izhihudaily.utils.ScreenUtil;
  * @desc
  */
 public abstract class BaseBarActivity extends BaseActivity {
-
     private Toolbar mToolbar;
     private FrameLayout mRootContent;
 

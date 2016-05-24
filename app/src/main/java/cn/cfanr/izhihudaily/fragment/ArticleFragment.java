@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -21,6 +22,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 
 import org.json.JSONObject;
 
+import java.util.List;
 import java.util.Map;
 
 import cn.cfanr.izhihudaily.R;
@@ -36,6 +38,7 @@ import cn.cfanr.izhihudaily.utils.JsonTool;
  */
 public class ArticleFragment extends Fragment {
     private static final String ARTICLE_ID = "articleId";
+    private static final String ARTICLE_CSS_URL="";
     private String articleId;
 
     private View layoutView;
@@ -98,6 +101,7 @@ public class ArticleFragment extends Fragment {
         mWebView.getSettings().setDisplayZoomControls(false);
         mWebView.getSettings().setLoadsImagesAutomatically(true);
         mWebView.addJavascriptInterface(this, "ZhihuDaily");
+        mWebView.setWebViewClient(new WebViewClient());
 
         rlTop.post(new Runnable() {
             @Override
@@ -126,7 +130,7 @@ public class ArticleFragment extends Fragment {
                         if(resultMap!=null){
                             String imgUrl=JsonTool.mapObjVal2Str(resultMap, "image");
                             if(TextUtils.isEmpty(imgUrl)){
-//                                rlTop.setVisibility(View.GONE);
+//                                rlTop.setVisibility(View.GONE);  //
                                 ViewGroup.LayoutParams param=rlTop.getLayoutParams();
                                 param.height=0;
                                 rlTop.setLayoutParams(param);
@@ -137,10 +141,17 @@ public class ArticleFragment extends Fragment {
                                 String title = JsonTool.mapObjVal2Str(resultMap, "title");
                                 tvTitle.setText(title);
                             }
-                            String bodyData=JsonTool.mapObjVal2Str(resultMap, "body");
-//                            mWebView.loadData(bodyData, "text/html", "UTF-8");
-                            mWebView.loadDataWithBaseURL(null, getHtmlData(bodyData), "text/html", "UTF-8", null);
                             String shareUrl=JsonTool.mapObjVal2Str(resultMap, "share_url");
+                            String bodyData=JsonTool.mapObjVal2Str(resultMap, "body");
+                            //如果body数据为空，说明是知乎日报站外资源，直接加载shareUrl；或者通过type判断，type=1站外资源（可能）
+                            if(TextUtils.isEmpty(bodyData)){
+                                mWebView.loadUrl(shareUrl);
+                            }else {
+//                            mWebView.loadData(bodyData, "text/html", "UTF-8");   //乱码
+                                String cssUrlStr = JsonTool.mapObjVal2Str(resultMap, "css");
+                                List<String> cssUrlList = JsonTool.jsonArrayToList(cssUrlStr);
+                                mWebView.loadDataWithBaseURL(null, getHtmlData(bodyData, cssUrlList), "text/html", "UTF-8", null);
+                            }
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -155,10 +166,18 @@ public class ArticleFragment extends Fragment {
     /**
      * 解决网页图片自适应，http://www.jianshu.com/p/d21989bea448
      */
-    private String getHtmlData(String bodyHTML) {
+    private String getHtmlData(String bodyHTML, List<String> cssUrlList) {
+        String cssUrls="";
+        if(cssUrlList!=null&&cssUrlList.size()>0){
+            for(String url:cssUrlList){
+                if(!TextUtils.isEmpty(url)){
+                    cssUrls+="<link rel=\"stylesheet\" type=\"text/css\" href=\""+url+"\">";
+                }
+            }
+        }
         String head = "<head>" +
                 "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
-                "<style>img{max-width: 100%; width:auto; height:auto;}</style>" +
+                "<style>img{max-width: 100%; width:auto; height:auto;}</style>" +cssUrls+
                 "</head>";
         return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
     }
