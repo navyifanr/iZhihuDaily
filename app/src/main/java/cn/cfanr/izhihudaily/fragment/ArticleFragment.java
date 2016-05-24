@@ -2,6 +2,7 @@ package cn.cfanr.izhihudaily.fragment;
 
 
 import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
@@ -30,6 +31,7 @@ import cn.cfanr.izhihudaily.app.Api;
 import cn.cfanr.izhihudaily.app.AppController;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
 import cn.cfanr.izhihudaily.utils.JsonTool;
+import cn.cfanr.izhihudaily.utils.ScreenUtil;
 
 /**
  *  @author xifan
@@ -38,10 +40,10 @@ import cn.cfanr.izhihudaily.utils.JsonTool;
  */
 public class ArticleFragment extends Fragment {
     private static final String ARTICLE_ID = "articleId";
-    private static final String ARTICLE_CSS_URL="";
     private String articleId;
 
     private View layoutView;
+    private View viewBlank;
     private RelativeLayout rlTop;
     private ImageView ivImage;
     private TextView tvTitle;
@@ -83,6 +85,7 @@ public class ArticleFragment extends Fragment {
 
     @SuppressLint("JavascriptInterface")
     private void initView(View layoutView) {
+        viewBlank=$(layoutView, R.id.view_bar);
         rlTop=$(layoutView, R.id.rl_article_top_img);
         ivImage=$(layoutView, R.id.iv_article_image);
         tvCopyRight=$(layoutView, R.id.tv_article_img_copyright);
@@ -102,6 +105,18 @@ public class ArticleFragment extends Fragment {
         mWebView.getSettings().setLoadsImagesAutomatically(true);
         mWebView.addJavascriptInterface(this, "ZhihuDaily");
         mWebView.setWebViewClient(new WebViewClient());
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {  //有设置透明状态栏时，空白bar的高度是actionbar+statusBar
+            viewBlank.post(new Runnable() {
+                @Override
+                public void run() {
+                    ViewGroup.LayoutParams params = viewBlank.getLayoutParams();
+                    int appBarHeight=new ScreenUtil(getActivity()).getAppBarHeight();
+                    params.height=appBarHeight;
+                    viewBlank.setLayoutParams(params);
+                }
+            });
+        }
 
         rlTop.post(new Runnable() {
             @Override

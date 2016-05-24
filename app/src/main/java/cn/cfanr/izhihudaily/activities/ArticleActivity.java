@@ -8,7 +8,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -21,7 +20,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 
 import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.adapter.ArticlePagerAdapter;
@@ -63,7 +61,7 @@ public class ArticleActivity extends BaseActivity {
         mToolbar=$(R.id.toolbar_article);
         mToolbar.setTitle("");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            mToolbar.getLayoutParams().height = new ScreenUtil().getAppBarHeight();
+            mToolbar.getLayoutParams().height = new ScreenUtil().getAppBarHeight();  //注意使用的是AppBar的高度
             mToolbar.setPadding(mToolbar.getPaddingLeft(), new ScreenUtil().getStatusBarHeight(), mToolbar.getPaddingRight(), mToolbar.getPaddingBottom());
         }
         setSupportActionBar(mToolbar);
@@ -71,15 +69,15 @@ public class ArticleActivity extends BaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         mViewPager=$(R.id.view_pager_article);
-        mViewPager.post(new Runnable() {
-            @Override
-            public void run() {
-                int statusBarHeight=new ScreenUtil(getActivity()).getStatusBarHeight();
-                ViewGroup.MarginLayoutParams params= (ViewGroup.MarginLayoutParams) mViewPager.getLayoutParams();
-                params.setMargins(0, statusBarHeight, 0, 0);
-                mViewPager.setLayoutParams(params);
-            }
-        });
+//        mViewPager.post(new Runnable() {
+//            @Override
+//            public void run() {
+//                int statusBarHeight=new ScreenUtil(getActivity()).getStatusBarHeight();
+//                ViewGroup.MarginLayoutParams params= (ViewGroup.MarginLayoutParams) mViewPager.getLayoutParams();
+//                params.setMargins(0, statusBarHeight, 0, 0);
+//                mViewPager.setLayoutParams(params);
+//            }
+//        });
         mViewPager.addOnPageChangeListener(new PageChangeListener());
     }
 
