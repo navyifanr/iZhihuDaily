@@ -11,7 +11,8 @@ import android.view.View;
  * @time 2016/5/11
  * @desc 继承自RecyclerView.OnScrollListener，可以监听到是否滑动到页面最低部
  */
-public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener implements OnListLoadNextPageListener {
+public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScrollListener implements OnChangeTitleListener,
+        OnListLoadNextPageListener {
 
     /**
      * 当前RecyclerView类型
@@ -52,9 +53,12 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
             }
         }
 
+        int firstVisibleItemPosition=0;
         switch (layoutManagerType) {
             case LinearLayout:
                 lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                firstVisibleItemPosition=((LinearLayoutManager) layoutManager).findFirstVisibleItemPosition();
+                onChangeTitle(firstVisibleItemPosition);
                 break;
             case GridLayout:
                 lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
@@ -95,12 +99,16 @@ public abstract class EndlessRecyclerOnScrollListener extends RecyclerView.OnScr
                 max = value;
             }
         }
-
         return max;
     }
 
     @Override
     public abstract void onLoadNextPage(final View view);
+
+    @Override
+    public void onChangeTitle(int firstVisibleItemPosition) {
+
+    }
 
     public static enum LayoutManagerType {
         LinearLayout,

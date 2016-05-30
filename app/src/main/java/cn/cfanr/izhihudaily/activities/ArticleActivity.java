@@ -91,12 +91,15 @@ public class ArticleActivity extends BaseActivity {
         });
 
         Bundle bundle=getIntent().getExtras();
-        position=bundle.getInt("position",0);
         articleIdList=bundle.getStringArrayList("articleIdList");
-        articleId=articleIdList.get(position);
+        articleId=bundle.getString("articleId", articleId);
         int length=articleIdList.size();
         for(int index=0;index<length;index++){
-            ArticleFragment articleFragment=ArticleFragment.newInstance(articleIdList.get(index));
+            String tmpArticleId=articleIdList.get(index);
+            if(TextUtils.equals(tmpArticleId, articleId)){
+                position=index;
+            }
+            ArticleFragment articleFragment=ArticleFragment.newInstance(tmpArticleId);
             fragmentList.add(articleFragment);
         }
         mAdapter=new ArticlePagerAdapter(getSupportFragmentManager(), fragmentList);

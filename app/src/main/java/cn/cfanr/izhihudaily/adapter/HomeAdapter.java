@@ -36,7 +36,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     }
 
     public interface OnItemClickListener {
-        void onItemClick(View view, int position);
+        void onItemClick(View view, int position, String articleId);
     }
 
     private OnItemClickListener mOnItemClickListener;
@@ -65,7 +65,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }else if(holder instanceof TitleHolder){
             ((TitleHolder) holder).tvTitle.setText(homeModel.getDate());
         }else if(holder instanceof NewsHolder){
-            NewsModel newsModel=homeModel.getNewsModel();
+            final NewsModel newsModel=homeModel.getNewsModel();
             ((NewsHolder) holder).tvTitle.setText(newsModel.getTitle());
             List<String> imgList=newsModel.getImages();
             if(imgList!=null&&imgList.size()>0) {
@@ -76,7 +76,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                     @Override
                     public void onClick(View v){
                         int pos=holder.getLayoutPosition();
-                        mOnItemClickListener.onItemClick(holder.itemView, pos);
+                        String articleId=newsModel.getId();
+                        mOnItemClickListener.onItemClick(holder.itemView, pos, articleId);
                     }
                 });
             }

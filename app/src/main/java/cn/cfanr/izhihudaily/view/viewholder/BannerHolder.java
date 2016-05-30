@@ -177,7 +177,7 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
                 @Override
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent(context, ArticleActivity.class);
-                    intent.putExtra("position", position);
+                    intent.putExtra("articleId", articleIdList.get(position));
                     intent.putStringArrayListExtra("articleIdList", articleIdList);
                     context.startActivity(intent);
                 }

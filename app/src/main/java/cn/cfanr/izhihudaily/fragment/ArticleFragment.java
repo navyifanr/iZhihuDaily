@@ -12,9 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -42,6 +42,7 @@ public class ArticleFragment extends Fragment {
     private static final String ARTICLE_ID = "articleId";
     private String articleId;
 
+    private ScrollView mScrollView;
     private View layoutView;
     private View viewBlank;
     private RelativeLayout rlTop;
@@ -85,6 +86,8 @@ public class ArticleFragment extends Fragment {
 
     @SuppressLint("JavascriptInterface")
     private void initView(View layoutView) {
+        mScrollView=$(layoutView, R.id.scroll_view_article);
+        mScrollView.scrollTo(0, 0);
         viewBlank=$(layoutView, R.id.view_bar);
         rlTop=$(layoutView, R.id.rl_article_top_img);
         ivImage=$(layoutView, R.id.iv_article_image);
@@ -104,9 +107,9 @@ public class ArticleFragment extends Fragment {
         mWebView.getSettings().setDisplayZoomControls(false);
         mWebView.getSettings().setLoadsImagesAutomatically(true);
         mWebView.addJavascriptInterface(this, "ZhihuDaily");
-        mWebView.setWebViewClient(new WebViewClient());
+//        mWebView.setWebViewClient(new WebViewClient());
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {  //有设置透明状态栏时，空白bar的高度是actionbar+statusBar
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {  //有设置透明状态栏时(4.4以上)，空白bar的高度是actionbar+statusBar
             viewBlank.post(new Runnable() {
                 @Override
                 public void run() {

@@ -121,9 +121,9 @@ public class HomeActivity extends BaseActivity {
         loadHomeData(-1, 0, lastNewsId);
         mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(View view, int position) {
+            public void onItemClick(View view, int position, String articleId) {
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
-                intent.putExtra("position", position-nonNewsListNum);
+                intent.putExtra("articleId", articleId);
                 intent.putStringArrayListExtra("articleIdList", articleIdList);
                 startActivity(intent);
             }
@@ -171,6 +171,15 @@ public class HomeActivity extends BaseActivity {
                     lastNewsId=themeArticleIdList.get(length-1);
                 }
                 loadHomeData(themeId, dayNum, lastNewsId);
+            }
+
+            @Override
+            public void onChangeTitle(int firstVisibleItemPosition) {
+                super.onChangeTitle(firstVisibleItemPosition);
+                if(themeId==-1){  //【首页】才需要改title
+                    String title=homeModelList.get(firstVisibleItemPosition).getDate();
+                    setTitle(title);
+                }
             }
         });
 
@@ -283,6 +292,7 @@ public class HomeActivity extends BaseActivity {
         }
         if(bannerList!=null){
             HomeModel bannerItem=new HomeModel();
+            bannerItem.setDate("首页");
             bannerItem.setBannerList(bannerList);
             bannerItem.setType(HomeType.BANNER_ITEM);
             homeModelList.add(bannerItem);
@@ -304,6 +314,7 @@ public class HomeActivity extends BaseActivity {
             int length = newsModelList.size();
             for (int index = 0; index < length; index++) {
                 HomeModel newsItem = new HomeModel();
+                newsItem.setDate(title);  //作为识别属于哪个title的标识
                 newsItem.setNewsModel(newsModelList.get(index));
                 newsItem.setType(HomeType.NEWS_ITEM);
                 homeModelList.add(newsItem);
