@@ -2,6 +2,7 @@
 ----------------------
 ## Preview-效果预览
 
+![](https://github.com/navyifanr/iZhihuDaily/blob/master/screenshot/iZhihuDaily.gif)
 
 ## Features-功能特点
 **1.已完成**
