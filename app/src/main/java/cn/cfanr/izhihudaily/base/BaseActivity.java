@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -79,13 +80,16 @@ public abstract class BaseActivity extends AppCompatActivity{
         return this;
     }
 
-    public String getClassMethodName(){
-        try {
-            return this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[3].getMethodName();
-        }catch (Exception e){
 
+    public String getClassMethodName(){
+        String currentMethodName="";
+        try {
+            currentMethodName= this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[3].getMethodName();
+        }catch (Exception e){
+            currentMethodName=this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[0].getMethodName();
         }
-        return this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[0].getMethodName();
+        Log.e("BaseActivity", currentMethodName);
+        return currentMethodName;
     }
 
 }

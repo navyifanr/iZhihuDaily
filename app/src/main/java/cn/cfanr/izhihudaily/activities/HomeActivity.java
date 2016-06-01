@@ -132,7 +132,8 @@ public class HomeActivity extends BaseActivity {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
-                intent.putExtra("position", position-1);
+                String articleId=themeArticleIdList.get(position-1);
+                intent.putExtra("articleId", articleId);
                 intent.putStringArrayListExtra("articleIdList", themeArticleIdList);
                 startActivity(intent);
             }
