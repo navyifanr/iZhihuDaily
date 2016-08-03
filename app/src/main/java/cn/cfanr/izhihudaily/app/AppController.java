@@ -7,6 +7,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.squareup.leakcanary.LeakCanary;
 
 import cn.cfanr.izhihudaily.utils.LruBitmapCache;
 
@@ -30,6 +31,7 @@ public class AppController extends Application{
     public void onCreate() {
         super.onCreate();
         mInstance=this;
+        LeakCanary.install(this);
     }
 
     public RequestQueue getRequestQueue() {
