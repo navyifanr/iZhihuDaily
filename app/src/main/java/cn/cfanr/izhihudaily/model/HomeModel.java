@@ -7,7 +7,7 @@ import java.util.List;
  * @time 2016/5/6
  * @desc 首页列表模型
  */
-public class HomeModel {
+public class HomeModel{
     private int type;
     private String date;
     private NewsModel newsModel;
@@ -21,12 +21,12 @@ public class HomeModel {
         this.type = type;
     }
 
-    public String getDate() {
-        return date;
+    public List<NewsModel> getBannerList() {
+        return bannerList;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setBannerList(List<NewsModel> bannerList) {
+        this.bannerList = bannerList;
     }
 
     public NewsModel getNewsModel() {
@@ -37,11 +37,11 @@ public class HomeModel {
         this.newsModel = newsModel;
     }
 
-    public List<NewsModel> getBannerList() {
-        return bannerList;
+    public String getDate() {
+        return date;
     }
 
-    public void setBannerList(List<NewsModel> bannerList) {
-        this.bannerList = bannerList;
+    public void setDate(String date) {
+        this.date = date;
     }
 }

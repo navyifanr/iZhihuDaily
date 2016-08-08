@@ -8,7 +8,7 @@
     android:paddingBottom="@dimen/spacing_small"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <cn.cfanr.izhihudaily.view.CircleImageView
+    <cn.cfanr.izhihudaily.widget.CircleImageView
         android:id="@+id/circle_iv_comment_avatar"
         android:layout_width="35dp"
         android:layout_height="35dp"

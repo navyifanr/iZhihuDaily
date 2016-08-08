@@ -17,7 +17,7 @@ import cn.cfanr.izhihudaily.model.HomeModel;
 import cn.cfanr.izhihudaily.model.HomeType;
 import cn.cfanr.izhihudaily.model.NewsModel;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
-import cn.cfanr.izhihudaily.view.viewholder.BannerHolder;
+import cn.cfanr.izhihudaily.ui.viewholder.BannerHolder;
 
 /**
  * @author xifan

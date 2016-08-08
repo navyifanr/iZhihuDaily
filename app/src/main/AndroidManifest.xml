@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.LaunchActivity"
+            android:name=".ui.activities.LaunchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/LaunchTheme">
             <intent-filter>
@@ -22,17 +22,17 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activities.HomeActivity"
+            android:name=".ui.activities.HomeActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.ArticleActivity"
+            android:name=".ui.activities.ArticleActivity"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".activities.EditorsListActivity"
+            android:name=".ui.activities.EditorsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".activities.WebViewActivity"
+        <activity android:name=".ui.activities.WebViewActivity"
             android:screenOrientation="portrait"/>
-        <activity android:name=".activities.CommentActivity"
+        <activity android:name=".ui.activities.CommentActivity"
             android:screenOrientation="portrait"/>
     </application>
 

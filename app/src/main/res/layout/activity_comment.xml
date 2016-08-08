@@ -26,7 +26,7 @@
         <include
             layout="@layout/view_divider_line"/>
 
-        <cn.cfanr.izhihudaily.view.NoScrollListView
+        <cn.cfanr.izhihudaily.widget.NoScrollListView
             android:id="@+id/list_view_long_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
         <include
             layout="@layout/view_divider_line"/>
 
-        <cn.cfanr.izhihudaily.view.NoScrollListView
+        <cn.cfanr.izhihudaily.widget.NoScrollListView
             android:id="@+id/list_view_short_comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

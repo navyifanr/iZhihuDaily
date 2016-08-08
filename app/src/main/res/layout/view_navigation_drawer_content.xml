@@ -28,7 +28,7 @@
             />
     </LinearLayout>
 
-    <cn.cfanr.izhihudaily.view.NoScrollListView
+    <cn.cfanr.izhihudaily.widget.NoScrollListView
         android:id="@+id/lv_drawer_content_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

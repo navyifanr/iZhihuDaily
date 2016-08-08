@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 
 import java.util.List;
 
-import cn.cfanr.izhihudaily.view.viewholder.CommonViewHolder;
+import cn.cfanr.izhihudaily.ui.viewholder.CommonViewHolder;
 
 /**
  * @author xifan

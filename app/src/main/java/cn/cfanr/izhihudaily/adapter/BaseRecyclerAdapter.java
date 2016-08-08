@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import cn.cfanr.izhihudaily.view.viewholder.RecyclerHolder;
+import cn.cfanr.izhihudaily.ui.viewholder.RecyclerHolder;
 
 /**
  * @author xifan

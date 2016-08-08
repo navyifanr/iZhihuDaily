@@ -16,7 +16,7 @@ import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.model.NewsModel;
 import cn.cfanr.izhihudaily.model.ThemeDailyModel;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
-import cn.cfanr.izhihudaily.view.viewholder.ThemeDailyHeader;
+import cn.cfanr.izhihudaily.ui.viewholder.ThemeDailyHeader;
 
 /**
  * @author xifan
