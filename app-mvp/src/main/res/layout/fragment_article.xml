@@ -1,0 +1,77 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/scroll_view_article"
+    >
+
+    <!--<FrameLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--&gt;-->
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            >
+            <View
+                android:id="@+id/view_bar"
+                android:layout_width="match_parent"
+                android:layout_height="?actionBarSize"
+                android:background="@android:color/transparent"
+                />
+
+            <!--WebView头部会留部分空白给图片栏-->
+            <WebView
+                android:id="@+id/web_view_article"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/view_bar"
+                android:background="@android:color/transparent"
+                />
+
+            <RelativeLayout
+                android:id="@+id/rl_article_top_img"
+                android:layout_width="match_parent"
+                android:layout_height="140dp"
+                android:layout_below="@id/view_bar"
+                >
+
+                <ImageView
+                    android:id="@+id/iv_article_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:background="@color/gray"
+                    android:scaleType="centerCrop"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_article_img_copyright"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    tools:text="500px 版权"
+                    android:layout_margin="@dimen/spacing_small"
+                    android:textColor="@color/light_gray"
+                    />
+
+                <TextView
+                    android:id="@+id/tv_article_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_article_img_copyright"
+                    tools:text="在“顶尖技术”公司工作是怎样的体验？"
+                    android:layout_marginLeft="@dimen/margin_left_right_normal"
+                    android:layout_marginRight="@dimen/margin_left_right_normal"
+                    android:textSize="@dimen/font_size_big_x"
+                    android:textColor="@color/white"
+                    />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    <!--</FrameLayout>-->
+
+</ScrollView>

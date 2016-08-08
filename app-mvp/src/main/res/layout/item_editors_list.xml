@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="@dimen/margin_left_right_normal">
+
+    <cn.cfanr.izhihudaily.widget.CircleImageView
+        android:id="@+id/circle_iv_editors_list_avatar"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_marginRight="@dimen/margin_left_right_small"
+        tools:background="@color/gray"
+        />
+
+    <TextView
+        android:id="@+id/tv_editors_list_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/circle_iv_editors_list_avatar"
+        tools:text="阿柯儿"
+        />
+
+    <TextView
+        android:id="@+id/tv_editors_list_bio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/circle_iv_editors_list_avatar"
+        android:layout_toRightOf="@id/circle_iv_editors_list_avatar"
+        tools:text="好奇心日报主编"
+        />
+
+</RelativeLayout>
