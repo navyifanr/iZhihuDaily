@@ -53,7 +53,7 @@ public class ArticleActivity extends BaseActivity implements ArticleView{
 
     @Override
     protected void initPresenter() {
-        articlePresenter=new ArticlePresenter();
+        articlePresenter=new ArticlePresenter(this);
         articlePresenter.attachView(this);
     }
 

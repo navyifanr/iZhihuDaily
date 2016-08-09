@@ -42,7 +42,7 @@ public class LaunchActivity extends BaseActivity implements LaunchView{
 
     @Override
     protected void initPresenter() {
-        launchPresenter=new LaunchPresenter();
+        launchPresenter=new LaunchPresenter(this);
         launchPresenter.attachView(this);
     }
 

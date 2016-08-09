@@ -79,7 +79,7 @@ public class HomeActivity extends BaseActivity implements HomeView{
 
     @Override
     protected void initPresenter() {
-        homePresenter=new HomePresenter();
+        homePresenter=new HomePresenter(this);
         homePresenter.attachView(this);
     }
 

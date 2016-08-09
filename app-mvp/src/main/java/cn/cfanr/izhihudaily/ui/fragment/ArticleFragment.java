@@ -148,27 +148,22 @@ public class ArticleFragment extends Fragment {
                         if(resultMap!=null){
                             String imgUrl=JsonTool.mapObjVal2Str(resultMap, "image");
                             if(TextUtils.isEmpty(imgUrl)){
-//                                rlTop.setVisibility(View.GONE);  //
-                                ViewGroup.LayoutParams param=rlTop.getLayoutParams();
-                                param.height=0;
-                                rlTop.setLayoutParams(param);
+                                hideArticleTopLayout();
                             }else {
-                                ImageUtils.loadImage(ivImage, imgUrl);
                                 String imgSource = JsonTool.mapObjVal2Str(resultMap, "image_source");
-                                tvCopyRight.setText(imgSource);
                                 String title = JsonTool.mapObjVal2Str(resultMap, "title");
-                                tvTitle.setText(title);
+                                showArticleTopImage(imgUrl, imgSource, title);
                             }
                             String shareUrl=JsonTool.mapObjVal2Str(resultMap, "share_url");
                             String bodyData=JsonTool.mapObjVal2Str(resultMap, "body");
                             //如果body数据为空，说明是知乎日报站外资源，直接加载shareUrl；或者通过type判断，type=1站外资源（可能）
                             if(TextUtils.isEmpty(bodyData)){
-                                mWebView.loadUrl(shareUrl);
+                                loadUrlNoCSS(shareUrl);
                             }else {
 //                            mWebView.loadData(bodyData, "text/html", "UTF-8");   //乱码
                                 String cssUrlStr = JsonTool.mapObjVal2Str(resultMap, "css");
                                 List<String> cssUrlList = JsonTool.jsonArrayToList(cssUrlStr);
-                                mWebView.loadDataWithBaseURL(null, getHtmlData(bodyData, cssUrlList), "text/html", "UTF-8", null);
+                                loadUrlWithCSS(bodyData, cssUrlList);
                             }
                         }
                     }
@@ -181,6 +176,26 @@ public class ArticleFragment extends Fragment {
         AppController.getInstance().addToRequestQueue(jsonObjReq, tagName);
     }
 
+    private void hideArticleTopLayout() {
+//        rlTop.setVisibility(View.GONE);   //invalid
+        ViewGroup.LayoutParams param=rlTop.getLayoutParams();
+        param.height=0;
+        rlTop.setLayoutParams(param);
+    }
+
+    private void showArticleTopImage(String imgUrl, String imgSource, String title) {
+        tvCopyRight.setText(imgSource);
+        ImageUtils.loadImage(ivImage, imgUrl);
+        tvTitle.setText(title);
+    }
+
+    private void loadUrlWithCSS(String bodyData, List<String> cssUrlList) {
+        mWebView.loadDataWithBaseURL(null, getHtmlData(bodyData, cssUrlList), "text/html", "UTF-8", null);
+    }
+
+    private void loadUrlNoCSS(String shareUrl) {
+        mWebView.loadUrl(shareUrl);
+    }
     /**
      * 解决网页图片自适应，http://www.jianshu.com/p/d21989bea448
      */

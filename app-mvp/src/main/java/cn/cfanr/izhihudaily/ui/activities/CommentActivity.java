@@ -51,7 +51,7 @@ public class CommentActivity extends BaseBarActivity implements CommentView{
 
     @Override
     protected void initPresenter() {
-        commentPresenter=new CommentPresenter();
+        commentPresenter=new CommentPresenter(this);
         commentPresenter.attachView(this);
     }
 

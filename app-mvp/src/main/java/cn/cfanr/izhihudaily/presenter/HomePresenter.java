@@ -1,5 +1,6 @@
 package cn.cfanr.izhihudaily.presenter;
 
+import android.support.annotation.NonNull;
 import android.text.TextUtils;
 
 import com.android.volley.Response;
@@ -28,6 +29,7 @@ import cn.cfanr.izhihudaily.ui.view.HomeView;
  *         desc:
  */
 public class HomePresenter extends BasePresenter<HomeView>{
+    private HomeView homeView;
 
     private List<NewsModel> bannerList=new ArrayList<>();
     private List<NewsModel> newsModelList=new ArrayList<>();
@@ -37,6 +39,9 @@ public class HomePresenter extends BasePresenter<HomeView>{
     private List<EditorModel> editorModelList=new ArrayList<>();
     private List<NewsModel> themeNewsList=new ArrayList<>();
 
+    public HomePresenter(@NonNull HomeView homeView){
+        this.homeView=homeView;
+    }
     /**
      * 当lastNewsId=""时，加载的是首页数据；当dayNum=-1时，加载的是主题项的数据
      * @param themeId -1表示首页，其他为主题项
@@ -72,7 +77,7 @@ public class HomePresenter extends BasePresenter<HomeView>{
                                 bannerList = JsonTool.jsonToObjList(bannerStr, NewsModel[].class);
                                 String contentStr = JsonTool.mapObjVal2Str(resultMap, "stories");
                                 newsModelList = JsonTool.jsonToObjList(contentStr, NewsModel[].class);
-                                getMvpView().showHomeData(bannerList, title, newsModelList);
+                                homeView.showHomeData(bannerList, title, newsModelList);
                             }else{  //主题项
                                 String description=JsonTool.mapObjVal2Str(resultMap, "description");
                                 String background=JsonTool.mapObjVal2Str(resultMap, "background");
@@ -80,7 +85,7 @@ public class HomePresenter extends BasePresenter<HomeView>{
                                 editorModelList=JsonTool.jsonToObjList(editorsStr, EditorModel[].class);
                                 String themeNewsStr=JsonTool.mapObjVal2Str(resultMap, "stories");
                                 themeNewsList=JsonTool.jsonToObjList(themeNewsStr, NewsModel[].class);
-                                getMvpView().showThemeDailyData(description, background, editorModelList, themeNewsList);
+                                homeView.showThemeDailyData(description, background, editorModelList, themeNewsList);
                             }
                         }
                     }
@@ -107,7 +112,7 @@ public class HomePresenter extends BasePresenter<HomeView>{
                             String themeStr=JsonTool.mapObjVal2Str(resultMap, "others");
                             themeModelList=JsonTool.jsonToObjList(themeStr, ThemeModel[].class);
                             if(themeModelList!=null){
-                                getMvpView().setDrawerMenu(themeModelList);
+                                homeView.setDrawerMenu(themeModelList);
                             }
                         }
                     }

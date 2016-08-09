@@ -1,5 +1,7 @@
 package cn.cfanr.izhihudaily.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -23,8 +25,13 @@ import cn.cfanr.izhihudaily.ui.view.CommentView;
  *         desc:
  */
 public class CommentPresenter extends BasePresenter<CommentView> {
+    private CommentView commentView;
     private List<CommentModel> longCommentList=new ArrayList<>();
     private List<CommentModel> shortCommentList=new ArrayList<>();
+
+    public CommentPresenter(@NonNull CommentView commentView){
+        this.commentView=commentView;
+    }
 
     public void loadLongCommentData(String articleId){
         String tagName=getClassMethodName();
@@ -37,7 +44,7 @@ public class CommentPresenter extends BasePresenter<CommentView> {
                         Map<String, Object> resultMap= JsonTool.parseJson2Map(response.toString());
                         String content=JsonTool.mapObjVal2Str(resultMap, "comments");
                         longCommentList=JsonTool.jsonToObjList(content, CommentModel[].class);
-                        getMvpView().setLongCommentsData(longCommentList);
+                        commentView.setLongCommentsData(longCommentList);
                     }
                 }, new Response.ErrorListener() {
 
@@ -59,7 +66,7 @@ public class CommentPresenter extends BasePresenter<CommentView> {
                         Map<String, Object> resultMap=JsonTool.parseJson2Map(response.toString());
                         String content=JsonTool.mapObjVal2Str(resultMap, "comments");
                         shortCommentList=JsonTool.jsonToObjList(content, CommentModel[].class);
-                        getMvpView().setShortCommentsData(shortCommentList);
+                        commentView.setShortCommentsData(shortCommentList);
                     }
                 }, new Response.ErrorListener() {
 

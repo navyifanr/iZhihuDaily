@@ -1,5 +1,7 @@
 package cn.cfanr.izhihudaily.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -11,8 +13,8 @@ import java.util.Map;
 import cn.cfanr.izhihudaily.app.Api;
 import cn.cfanr.izhihudaily.app.AppController;
 import cn.cfanr.izhihudaily.core.mvp.BasePresenter;
-import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.ui.view.ArticleView;
+import cn.cfanr.izhihudaily.utils.JsonTool;
 
 /**
  * @author xifan
@@ -20,6 +22,11 @@ import cn.cfanr.izhihudaily.ui.view.ArticleView;
  *         desc:
  */
 public class ArticlePresenter extends BasePresenter<ArticleView> {
+    private ArticleView articleView;
+
+    public ArticlePresenter(@NonNull ArticleView articleView){
+        this.articleView = articleView;
+    }
 
     public void loadArticleExtraData(String articleId){
         String tagName=getClassMethodName();
@@ -33,7 +40,7 @@ public class ArticlePresenter extends BasePresenter<ArticleView> {
                         if(resultMap!=null){
                             String commentsNum=JsonTool.mapObjVal2Str(resultMap, "comments");
                             String likesNum=JsonTool.mapObjVal2Str(resultMap, "popularity");
-                            getMvpView().setArticleExtraData(commentsNum, likesNum);
+                            articleView.setArticleExtraData(commentsNum, likesNum);
                         }
                     }
                 }, new Response.ErrorListener() {

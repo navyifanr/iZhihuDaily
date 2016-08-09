@@ -1,5 +1,7 @@
 package cn.cfanr.izhihudaily.presenter;
 
+import android.support.annotation.NonNull;
+
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -19,6 +21,11 @@ import cn.cfanr.izhihudaily.ui.view.LaunchView;
  *         desc:
  */
 public class LaunchPresenter extends BasePresenter<LaunchView> {
+    private LaunchView launchView;
+
+    public LaunchPresenter(@NonNull LaunchView launchView){
+        this.launchView=launchView;
+    }
 
     public void loadLaunchData(){
         String tagName=getClassMethodName();
@@ -29,7 +36,7 @@ public class LaunchPresenter extends BasePresenter<LaunchView> {
                     public void onResponse(JSONObject response) {
                         String author= JsonTool.getObjString(response, "text");
                         String imgUrl=JsonTool.getObjString(response, "img");
-                        getMvpView().showLaunchPage(author, imgUrl);
+                        launchView.showLaunchPage(author, imgUrl);
                     }
                 }, new Response.ErrorListener() {
 
