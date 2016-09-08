@@ -49,7 +49,7 @@ public class HomePresenter extends BasePresenter<HomeView>{
      * @param lastNewsId  主题项的文章列表最后一条数据的id
      */
     public void loadHomeData(final int themeId, int dayNum, String lastNewsId){
-        String tagName=getClassMethodName();
+        String tagName= getClassName();
         String url;
         if(themeId==-1){
             if(dayNum==0){
@@ -100,7 +100,7 @@ public class HomePresenter extends BasePresenter<HomeView>{
     }
 
     public void loadDrawerList(){
-        String tagName=getClassMethodName();
+        String tagName= getClassName();
         String url=Api.url_themes_list;
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {

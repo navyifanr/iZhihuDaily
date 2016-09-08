@@ -28,7 +28,7 @@ public class LaunchPresenter extends BasePresenter<LaunchView> {
     }
 
     public void loadLaunchData(){
-        String tagName=getClassMethodName();
+        String tagName= getClassName();
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(Api.url_launch+getLaunchImgSize(), null,
                 new Response.Listener<JSONObject>() {
 

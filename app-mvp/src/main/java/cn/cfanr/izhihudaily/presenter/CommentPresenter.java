@@ -34,7 +34,7 @@ public class CommentPresenter extends BasePresenter<CommentView> {
     }
 
     public void loadLongCommentData(String articleId){
-        String tagName=getClassMethodName();
+        String tagName= getClassName();
         String url=String.format(Api.url_article_long_comments, articleId);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {
@@ -56,7 +56,7 @@ public class CommentPresenter extends BasePresenter<CommentView> {
     }
 
     public void loadShortCommentData(String articleId){
-        String tagName=getClassMethodName();
+        String tagName= getClassName();
         String url=String.format(Api.url_article_short_comments, articleId);
         JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, null,
                 new Response.Listener<JSONObject>() {

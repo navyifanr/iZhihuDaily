@@ -4,11 +4,7 @@ package cn.cfanr.izhihudaily.ui.fragment;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
@@ -17,20 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-
-import org.json.JSONObject;
-
-import java.util.List;
-import java.util.Map;
-
 import cn.cfanr.izhihudaily.R;
-import cn.cfanr.izhihudaily.app.Api;
-import cn.cfanr.izhihudaily.app.AppController;
+import cn.cfanr.izhihudaily.core.BaseFragment;
+import cn.cfanr.izhihudaily.presenter.ArticleFrgPresenter;
+import cn.cfanr.izhihudaily.ui.view.ArticleFrgView;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
-import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 
 /**
@@ -38,12 +25,13 @@ import cn.cfanr.izhihudaily.utils.ScreenUtil;
  *  @time 2016/5/13
  *  @desc 文章详情
  */
-public class ArticleFragment extends Fragment {
+public class ArticleFragment extends BaseFragment implements ArticleFrgView{
     private static final String ARTICLE_ID = "articleId";
     private String articleId;
 
+    private ArticleFrgPresenter articleFrgPresenter;
+
     private ScrollView mScrollView;
-    private View layoutView;
     private View viewBlank;
     private RelativeLayout rlTop;
     private ImageView ivImage;
@@ -72,20 +60,18 @@ public class ArticleFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        layoutView=inflater.inflate(R.layout.fragment_article, container, false);
-        return layoutView;
+    public int getLayoutResId() {
+        return R.layout.fragment_article;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        initView(layoutView);
-        loadArticleContent(articleId);
+    protected void initPresenter() {
+        articleFrgPresenter = new ArticleFrgPresenter(this);
+        articleFrgPresenter.attachView(this);
     }
 
-    @SuppressLint("JavascriptInterface")
-    private void initView(View layoutView) {
+    @Override @SuppressLint("JavascriptInterface")
+    public void initViews(View layoutView) {
         mScrollView=$(layoutView, R.id.scroll_view_article);
         mScrollView.scrollTo(0, 0);
         viewBlank=$(layoutView, R.id.view_bar);
@@ -136,95 +122,40 @@ public class ArticleFragment extends Fragment {
         });
     }
 
-    private void loadArticleContent(String articleId){
-        String tagName=getClassMethodName();
-        String url=String.format(Api.url_article_content, articleId);
-        JsonObjectRequest jsonObjReq = new JsonObjectRequest(url, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Map<String, Object> resultMap= JsonTool.parseJson2Map(response.toString());
-                        if(resultMap!=null){
-                            String imgUrl=JsonTool.mapObjVal2Str(resultMap, "image");
-                            if(TextUtils.isEmpty(imgUrl)){
-                                hideArticleTopLayout();
-                            }else {
-                                String imgSource = JsonTool.mapObjVal2Str(resultMap, "image_source");
-                                String title = JsonTool.mapObjVal2Str(resultMap, "title");
-                                showArticleTopImage(imgUrl, imgSource, title);
-                            }
-                            String shareUrl=JsonTool.mapObjVal2Str(resultMap, "share_url");
-                            String bodyData=JsonTool.mapObjVal2Str(resultMap, "body");
-                            //如果body数据为空，说明是知乎日报站外资源，直接加载shareUrl；或者通过type判断，type=1站外资源（可能）
-                            if(TextUtils.isEmpty(bodyData)){
-                                loadUrlNoCSS(shareUrl);
-                            }else {
-//                            mWebView.loadData(bodyData, "text/html", "UTF-8");   //乱码
-                                String cssUrlStr = JsonTool.mapObjVal2Str(resultMap, "css");
-                                List<String> cssUrlList = JsonTool.jsonArrayToList(cssUrlStr);
-                                loadUrlWithCSS(bodyData, cssUrlList);
-                            }
-                        }
-                    }
-                }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-            }
-        });
-        AppController.getInstance().addToRequestQueue(jsonObjReq, tagName);
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        articleFrgPresenter.loadArticleContent(articleId);
     }
 
-    private void hideArticleTopLayout() {
+    @Override
+    public void hideArticleTopLayout() {
 //        rlTop.setVisibility(View.GONE);   //invalid
         ViewGroup.LayoutParams param=rlTop.getLayoutParams();
         param.height=0;
         rlTop.setLayoutParams(param);
     }
 
-    private void showArticleTopImage(String imgUrl, String imgSource, String title) {
+    @Override
+    public void showArticleTopImage(String imgUrl, String imgSource, String title) {
         tvCopyRight.setText(imgSource);
         ImageUtils.loadImage(ivImage, imgUrl);
         tvTitle.setText(title);
     }
 
-    private void loadUrlWithCSS(String bodyData, List<String> cssUrlList) {
-        mWebView.loadDataWithBaseURL(null, getHtmlData(bodyData, cssUrlList), "text/html", "UTF-8", null);
+    @Override
+    public void loadUrlWithCSS(String htmlData) {
+        mWebView.loadDataWithBaseURL(null, htmlData, "text/html", "UTF-8", null);
     }
 
-    private void loadUrlNoCSS(String shareUrl) {
+    @Override
+    public void loadUrlNoCSS(String shareUrl) {
         mWebView.loadUrl(shareUrl);
     }
-    /**
-     * 解决网页图片自适应，http://www.jianshu.com/p/d21989bea448
-     */
-    private String getHtmlData(String bodyHTML, List<String> cssUrlList) {
-        String cssUrls="";
-        if(cssUrlList!=null&&cssUrlList.size()>0){
-            for(String url:cssUrlList){
-                if(!TextUtils.isEmpty(url)){
-                    cssUrls+="<link rel=\"stylesheet\" type=\"text/css\" href=\""+url+"\">";
-                }
-            }
-        }
-        String head = "<head>" +
-                "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, user-scalable=no\"> " +
-                "<style>img{max-width: 100%; width:auto; height:auto;}</style>" +cssUrls+
-                "</head>";
-        return "<html>" + head + "<body>" + bodyHTML + "</body></html>";
-    }
 
-    private <T extends View> T $(View view, @IdRes int resId){
-        return (T) view.findViewById(resId);
-    }
-
-    public String getClassMethodName(){
-        try {
-            return this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[3].getMethodName();
-        }catch (Exception e){
-
-        }
-        return this.getClass().getName()+"."+Thread.currentThread().getStackTrace()[0].getMethodName();
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        articleFrgPresenter.detachView();
     }
 }

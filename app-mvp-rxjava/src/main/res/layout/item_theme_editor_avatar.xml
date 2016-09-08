@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <cn.cfanr.izhihudaily.widget.CircleImageView
+        android:id="@+id/circle_iv_editor_avatar"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        tools:background="@color/gray"
+        android:layout_marginLeft="@dimen/spacing_tiny"
+        android:layout_marginRight="@dimen/spacing_tiny"
+        android:layout_marginTop="@dimen/spacing_small"
+        android:layout_marginBottom="@dimen/spacing_small"
+        />
+
+</FrameLayout>

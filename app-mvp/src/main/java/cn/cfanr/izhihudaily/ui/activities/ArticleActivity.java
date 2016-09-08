@@ -19,13 +19,13 @@ import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.adapter.ArticlePagerAdapter;
 import cn.cfanr.izhihudaily.core.BaseActivity;
 import cn.cfanr.izhihudaily.ui.fragment.ArticleFragment;
-import cn.cfanr.izhihudaily.presenter.ArticlePresenter;
+import cn.cfanr.izhihudaily.presenter.ArticleActPresenter;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 import cn.cfanr.izhihudaily.utils.ToastUtils;
-import cn.cfanr.izhihudaily.ui.view.ArticleView;
+import cn.cfanr.izhihudaily.ui.view.ArticleActView;
 
-public class ArticleActivity extends BaseActivity implements ArticleView{
-    private ArticlePresenter articlePresenter;
+public class ArticleActivity extends BaseActivity implements ArticleActView {
+    private ArticleActPresenter articleActPresenter;
 
     private Toolbar mToolbar;
     private ImageView ivShare, ivCollect, ivComment, ivLike;
@@ -53,8 +53,8 @@ public class ArticleActivity extends BaseActivity implements ArticleView{
 
     @Override
     protected void initPresenter() {
-        articlePresenter=new ArticlePresenter(this);
-        articlePresenter.attachView(this);
+        articleActPresenter =new ArticleActPresenter(this);
+        articleActPresenter.attachView(this);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class ArticleActivity extends BaseActivity implements ArticleView{
         ivLike=$(R.id.iv_article_like);
         tvLike=$(R.id.tv_article_like);
 
-        articlePresenter.loadArticleExtraData(articleId);
+        articleActPresenter.loadArticleExtraData(articleId);
 
         OnMenuItemClickListener onMenuItemClickListener=new OnMenuItemClickListener();
         ivShare.setOnClickListener(onMenuItemClickListener);
@@ -135,7 +135,7 @@ public class ArticleActivity extends BaseActivity implements ArticleView{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        articlePresenter.detachView();
+        articleActPresenter.detachView();
     }
 
     class OnMenuItemClickListener implements View.OnClickListener{
