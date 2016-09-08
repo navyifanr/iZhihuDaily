@@ -20,8 +20,8 @@ import java.util.List;
 
 import cn.cfanr.izhihudaily.R;
 import cn.cfanr.izhihudaily.adapter.ImageAdapter;
-import cn.cfanr.izhihudaily.model.News;
 import cn.cfanr.izhihudaily.model.HomeModel;
+import cn.cfanr.izhihudaily.model.News;
 import cn.cfanr.izhihudaily.ui.activities.ArticleActivity;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;

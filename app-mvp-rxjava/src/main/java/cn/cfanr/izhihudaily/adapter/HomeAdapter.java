@@ -13,9 +13,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import cn.cfanr.izhihudaily.R;
-import cn.cfanr.izhihudaily.model.News;
 import cn.cfanr.izhihudaily.model.HomeModel;
 import cn.cfanr.izhihudaily.model.HomeType;
+import cn.cfanr.izhihudaily.model.News;
 import cn.cfanr.izhihudaily.ui.viewholder.BannerHolder;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
 
