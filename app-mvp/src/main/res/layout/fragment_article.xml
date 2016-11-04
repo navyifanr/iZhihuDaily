@@ -24,7 +24,7 @@
                 />
 
             <!--WebView头部会留部分空白给图片栏-->
-            <WebView
+            <cn.cfanr.izhihudaily.widget.PhotoPreviewWebView
                 android:id="@+id/web_view_article"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

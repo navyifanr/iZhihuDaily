@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -19,6 +20,8 @@ import cn.cfanr.izhihudaily.presenter.ArticleFrgPresenter;
 import cn.cfanr.izhihudaily.ui.view.ArticleFrgView;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
+import cn.cfanr.izhihudaily.utils.ToastUtils;
+import cn.cfanr.izhihudaily.widget.PhotoPreviewWebView;
 
 /**
  *  @author xifan
@@ -37,7 +40,7 @@ public class ArticleFragment extends BaseFragment implements ArticleFrgView{
     private ImageView ivImage;
     private TextView tvTitle;
     private TextView tvCopyRight;
-    private WebView mWebView;
+    private PhotoPreviewWebView mWebView;
 
     public ArticleFragment() {
         // Required empty public constructor
@@ -80,20 +83,7 @@ public class ArticleFragment extends BaseFragment implements ArticleFrgView{
         tvCopyRight=$(layoutView, R.id.tv_article_img_copyright);
         tvTitle=$(layoutView, R.id.tv_article_title);
         mWebView=$(layoutView, R.id.web_view_article);
-        mWebView.getSettings().setDefaultTextEncodingName("UTF-8");
-        mWebView.getSettings().setAllowFileAccess(true);
-        mWebView.getSettings().setAppCacheEnabled(true);
-        mWebView.getSettings().setAppCachePath(getActivity().getApplicationContext().getDir("cache", 0).getPath());
-        mWebView.getSettings().setCacheMode(1);
-        mWebView.getSettings().setLoadWithOverviewMode(true);
-        mWebView.getSettings().setDomStorageEnabled(true);
-        mWebView.getSettings().setJavaScriptEnabled(true);
-        mWebView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-        mWebView.getSettings().setBuiltInZoomControls(true);
-        mWebView.getSettings().setDisplayZoomControls(false);
-        mWebView.getSettings().setLoadsImagesAutomatically(true);
-        mWebView.addJavascriptInterface(this, "ZhihuDaily");
-//        mWebView.setWebViewClient(new WebViewClient());
+        setWebViewEvent();
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {  //有设置透明状态栏时(4.4以上)，空白bar的高度是actionbar+statusBar
             viewBlank.post(new Runnable() {
@@ -118,6 +108,37 @@ public class ArticleFragment extends BaseFragment implements ArticleFrgView{
                 ViewGroup.LayoutParams webParam=mWebView.getLayoutParams();
                 webParam.width=width;
                 mWebView.setLayoutParams(webParam);
+            }
+        });
+    }
+
+    private void setWebViewEvent() {
+        mWebView.getSettings().setJavaScriptEnabled(true);
+        mWebView.getSettings().setDefaultTextEncodingName("UTF -8");
+        mWebView.setWebViewClient(new WebViewClient() {
+            boolean isRedirect = false; //网页是否重定向
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                isRedirect = true;
+                view.loadUrl(url);
+                return true;
+            }
+
+            // 网页加载结束
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if(!isRedirect) {
+                    // web 页面加载完成，添加监听图片的点击 js 函数
+                    mWebView.setImageClickListener();
+                    //解析 HTML
+                    mWebView.parseHTML(view);
+                }
+            }
+
+            @Override
+            public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
+                ToastUtils.show("请检查您的网络设置");
             }
         });
     }

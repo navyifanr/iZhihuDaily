@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.ImageLoader;
@@ -56,13 +58,6 @@ public class LaunchActivity extends BaseActivity implements LaunchView{
     protected void initEvent() {
         imageLoader = AppController.getInstance().getImageLoader();
         mImageView.setErrorImageResId(R.mipmap.bg_launch);
-        mImageView.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                startActivity(new Intent(getActivity(), HomeActivity.class));
-                finish();
-            }
-        }, 3000);
         launchPresenter.loadLaunchData();
     }
 
@@ -72,6 +67,32 @@ public class LaunchActivity extends BaseActivity implements LaunchView{
         if(!TextUtils.isEmpty(author)) {
             tvAuthor.setText("By " + author);
         }
+    }
+
+    @Override
+    public void showPageScaleAnim() {
+        ScaleAnimation scaleAnim = new ScaleAnimation(1.0f, 1.2f, 1.0f, 1.2f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnim.setFillAfter(true);
+        scaleAnim.setDuration(3000);
+        scaleAnim.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                startActivity(new Intent(getActivity(), HomeActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        mImageView.setAnimation(scaleAnim);
     }
 
     @Override

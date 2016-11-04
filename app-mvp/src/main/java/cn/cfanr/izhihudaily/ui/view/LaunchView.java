@@ -9,4 +9,6 @@ import cn.cfanr.izhihudaily.core.mvp.MvpView;
  */
 public interface LaunchView extends MvpView{
     void showLaunchPage(String author, String imgUrl);
+
+    void showPageScaleAnim();
 }

@@ -11,14 +11,15 @@ import org.json.JSONObject;
 import cn.cfanr.izhihudaily.app.Api;
 import cn.cfanr.izhihudaily.app.AppController;
 import cn.cfanr.izhihudaily.core.mvp.BasePresenter;
+import cn.cfanr.izhihudaily.utils.DownLoadImageUtils;
 import cn.cfanr.izhihudaily.utils.JsonTool;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 import cn.cfanr.izhihudaily.ui.view.LaunchView;
 
 /**
- * @author xifan
- *         date: 2016/8/8
- *         desc:
+ * author: xifan
+ * date: 2016/8/8
+ * desc:
  */
 public class LaunchPresenter extends BasePresenter<LaunchView> {
     private LaunchView launchView;
@@ -37,6 +38,8 @@ public class LaunchPresenter extends BasePresenter<LaunchView> {
                         String author= JsonTool.getObjString(response, "text");
                         String imgUrl=JsonTool.getObjString(response, "img");
                         launchView.showLaunchPage(author, imgUrl);
+                        launchView.showPageScaleAnim();
+                        DownLoadImageUtils.downLoad(getMvpView().getContext(), imgUrl);
                     }
                 }, new Response.ErrorListener() {
 
