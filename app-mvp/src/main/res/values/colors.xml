@@ -20,4 +20,8 @@
     <color name="orange">#FF9D2F</color>
     <color name="red">#FF432F</color>
 
+    <color name="color3F3F3F">#ff3F3F3F</color>
+    <color name="color3A3A3A">#ff3A3A3A</color>
+    <color name="color868686">#ff868686</color>
+    <color name="color8A9599">#ff8A9599</color>
 </resources>

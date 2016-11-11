@@ -20,6 +20,7 @@ import cn.cfanr.izhihudaily.adapter.ArticlePagerAdapter;
 import cn.cfanr.izhihudaily.core.BaseActivity;
 import cn.cfanr.izhihudaily.ui.fragment.ArticleFragment;
 import cn.cfanr.izhihudaily.presenter.ArticleActPresenter;
+import cn.cfanr.izhihudaily.utils.PreferenceUtil;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 import cn.cfanr.izhihudaily.utils.ToastUtils;
 import cn.cfanr.izhihudaily.ui.view.ArticleActView;
@@ -175,6 +176,7 @@ public class ArticleActivity extends BaseActivity implements ArticleActView {
 
         @Override
         public void onPageSelected(int position) {
+            PreferenceUtil.setReadArticleIds(getActivity(), articleIdList.get(position));
             mViewPager.setCurrentItem(position, true);
         }
     }

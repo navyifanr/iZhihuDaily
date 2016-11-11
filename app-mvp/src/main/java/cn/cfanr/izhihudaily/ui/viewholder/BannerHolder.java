@@ -24,6 +24,7 @@ import cn.cfanr.izhihudaily.adapter.ImageAdapter;
 import cn.cfanr.izhihudaily.model.HomeModel;
 import cn.cfanr.izhihudaily.model.NewsModel;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
+import cn.cfanr.izhihudaily.utils.PreferenceUtil;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
 
 /**
@@ -176,8 +177,10 @@ public class BannerHolder  extends RecyclerView.ViewHolder {
             imgAdapter.setOnItemClickListener(new ImageAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
+                    String articleId = articleIdList.get(position);
+                    PreferenceUtil.setReadArticleIds(context, articleId);
                     Intent intent = new Intent(context, ArticleActivity.class);
-                    intent.putExtra("articleId", articleIdList.get(position));
+                    intent.putExtra("articleId", articleId);
                     intent.putStringArrayListExtra("articleIdList", articleIdList);
                     context.startActivity(intent);
                 }

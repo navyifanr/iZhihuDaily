@@ -2,6 +2,7 @@ package cn.cfanr.izhihudaily.adapter;
 
 import android.content.Context;
 import android.support.annotation.IdRes;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import cn.cfanr.izhihudaily.model.HomeType;
 import cn.cfanr.izhihudaily.model.NewsModel;
 import cn.cfanr.izhihudaily.utils.ImageUtils;
 import cn.cfanr.izhihudaily.ui.viewholder.BannerHolder;
+import cn.cfanr.izhihudaily.utils.PreferenceUtil;
 
 /**
  * @author xifan
@@ -71,12 +73,18 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             if(imgList!=null&&imgList.size()>0) {
                 ImageUtils.loadImage(((NewsHolder) holder).mImg, newsModel.getImages().get(0));
             }
+            final String articleId=newsModel.getId();
+            if(PreferenceUtil.isRead(context, articleId)){
+                ((NewsHolder) holder).tvTitle.setTextColor(ContextCompat.getColor(context, R.color.gray));
+            }else{
+                ((NewsHolder) holder).tvTitle.setTextColor(ContextCompat.getColor(context, R.color.black));
+            }
             if (mOnItemClickListener != null) {
                 holder.itemView.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
+                        ((NewsHolder) holder).tvTitle.setTextColor(ContextCompat.getColor(context, R.color.gray));
                         int pos=holder.getLayoutPosition();
-                        String articleId=newsModel.getId();
                         mOnItemClickListener.onItemClick(holder.itemView, pos, articleId);
                     }
                 });

@@ -34,12 +34,13 @@ import cn.cfanr.izhihudaily.model.NewsModel;
 import cn.cfanr.izhihudaily.model.ThemeDailyModel;
 import cn.cfanr.izhihudaily.model.ThemeModel;
 import cn.cfanr.izhihudaily.presenter.HomePresenter;
-import cn.cfanr.izhihudaily.widget.NoScrollListView;
-import cn.cfanr.izhihudaily.widget.RecyclerView.EndlessRecyclerOnScrollListener;
+import cn.cfanr.izhihudaily.ui.view.HomeView;
 import cn.cfanr.izhihudaily.ui.viewholder.CommonViewHolder;
 import cn.cfanr.izhihudaily.utils.DateTimeUtils;
+import cn.cfanr.izhihudaily.utils.PreferenceUtil;
 import cn.cfanr.izhihudaily.utils.ScreenUtil;
-import cn.cfanr.izhihudaily.ui.view.HomeView;
+import cn.cfanr.izhihudaily.widget.NoScrollListView;
+import cn.cfanr.izhihudaily.widget.RecyclerView.EndlessRecyclerOnScrollListener;
 
 public class HomeActivity extends BaseActivity implements HomeView{
     private HomePresenter homePresenter;
@@ -118,6 +119,7 @@ public class HomeActivity extends BaseActivity implements HomeView{
         mAdapter.setOnItemClickListener(new HomeAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position, String articleId) {
+                PreferenceUtil.setReadArticleIds(getActivity(), articleId);
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 intent.putExtra("articleId", articleId);
                 intent.putStringArrayListExtra("articleIdList", articleIdList);
@@ -129,6 +131,7 @@ public class HomeActivity extends BaseActivity implements HomeView{
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), ArticleActivity.class);
                 String articleId=themeArticleIdList.get(position-1);
+                PreferenceUtil.setReadArticleIds(getActivity(), articleId);
                 intent.putExtra("articleId", articleId);
                 intent.putStringArrayListExtra("articleIdList", themeArticleIdList);
                 startActivity(intent);
@@ -295,6 +298,13 @@ public class HomeActivity extends BaseActivity implements HomeView{
                 setSelectItem(position, themeId);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+        themeDailyAdapter.notifyDataSetChanged();
     }
 
     @Override
