@@ -3,7 +3,6 @@ package cn.cfanr.izhihudaily.ui.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.WindowManager;
 import android.widget.TextView;
 
@@ -69,10 +68,15 @@ public class LaunchActivity extends BaseActivity implements LaunchView{
 
     @Override
     public void showLaunchPage(Launch launch) {
-        mImageView.setImageUrl(launch.getImg(), imageLoader);
-        String author=launch.getText();
-        if(!TextUtils.isEmpty(author)) {
-            tvAuthor.setText("By " + author);
+        try {
+            String url = launch.getCreatives().get(0).getUrl();
+            mImageView.setImageUrl(url, imageLoader);
+//            String author = launch.getCreatives().get(0);
+//            if (!TextUtils.isEmpty(author)) {
+//                tvAuthor.setText("By " + author);
+//            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 

@@ -13,7 +13,7 @@ public class Api {
      * api启动页地址 http://news-at.zhihu.com/api/4/start-image/1080*1776
      * 320*432，480*728，720*1184，1080*1776
      */
-    public static String url_launch=host+"api/4/start-image/";
+    public static String url_launch=host+"api/7/prefetch-launch-images/";
 
     //最新消息
     public static String url_latest_news=host+"api/4/news/latest";

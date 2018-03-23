@@ -13,6 +13,7 @@ import cn.cfanr.izhihudaily.model.NewsExtra;
 import cn.cfanr.izhihudaily.model.NewsList;
 import cn.cfanr.izhihudaily.model.ThemeDaily;
 import cn.cfanr.izhihudaily.model.ThemeList;
+import cn.cfanr.izhihudaily.utils.DateTimeUtils;
 import cn.cfanr.izhihudaily.utils.NetUtil;
 import okhttp3.Cache;
 import okhttp3.CacheControl;
@@ -27,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import rx.Observable;
 
 public class RetrofitManager {
-    public static final String BASE_ZHIHU_URL = "http://news-at.zhihu.com/api/4/";
+    public static final String BASE_ZHIHU_URL = "https://news-at.zhihu.com/api/";
     //短缓存有效期为1分钟
     public static final int CACHE_STALE_SHORT = 60;
     //长缓存有效期为7天
@@ -107,13 +108,11 @@ public class RetrofitManager {
     }
 
     public Observable<NewsList> loadHomeNews(int dayNum) {
-        String type;
         if (dayNum == 0) {
-            type = "latest";
+            return mApiService.loadHomeNews("latest");
         } else {
-            type = "before/"+dayNum;
+            return mApiService.loadHomeNewsBefore(DateTimeUtils.getNDaysAgo(dayNum));
         }
-        return mApiService.loadHomeNews(type);
     }
 
     public Observable<ThemeList> loadThemeList(){
@@ -121,13 +120,11 @@ public class RetrofitManager {
     }
 
     public Observable<ThemeDaily> loadThemeDaily(int themeId, String lastNewsId){
-        String type;
         if(TextUtils.equals(lastNewsId, "0")){
-            type= themeId+"";
+            return mApiService.loadThemeDaily(themeId+"");
         }else{
-            type=themeId+"/before/"+lastNewsId;
+            return mApiService.loadThemeDailyBefore(themeId+"", lastNewsId);
         }
-        return mApiService.loadThemeDaily(type);
     }
 
     public Observable<NewsDetail> loadNewsContent( String articleId){

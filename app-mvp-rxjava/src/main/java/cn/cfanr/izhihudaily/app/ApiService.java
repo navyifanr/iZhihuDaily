@@ -18,27 +18,33 @@ import rx.Observable;
  */
 public interface ApiService {
 
-    @GET("start-image/{size}")
+    @GET("7/prefetch-launch-images/{size}")
     Observable<Launch> loadLaunch(@Path("size") String size);
 
-    @GET("news/{type}")
+    @GET("4/news/{type}")
     Observable<NewsList> loadHomeNews(@Path("type") String type);
 
-    @GET("themes")
+    @GET("4/news/before/{date}")
+    Observable<NewsList> loadHomeNewsBefore(@Path("date") String date);
+
+    @GET("4/themes")
     Observable<ThemeList> loadThemeList();
 
-    @GET("theme/{type}")
-    Observable<ThemeDaily> loadThemeDaily(@Path("type") String type);
+    @GET("4/theme/{themeId}")
+    Observable<ThemeDaily> loadThemeDaily(@Path("themeId") String themeId);
 
-    @GET("news/{articleId}")
+    @GET("4/theme/{themeId}/before/{newId}")
+    Observable<ThemeDaily> loadThemeDailyBefore(@Path("themeId") String themeId, @Path("newId") String newId);
+
+    @GET("4/news/{articleId}")
     Observable<NewsDetail> loadNewsContent(@Path("articleId") String articleId);
 
-    @GET("story-extra/{articleId}")
+    @GET("4/story-extra/{articleId}")
     Observable<NewsExtra> loadNewsExtraData(@Path("articleId") String articleId);
 
-    @GET("story/{articleId}/long-comments")
+    @GET("4/story/{articleId}/long-comments")
     Observable<CommentList> loadLongCommentData(@Path("articleId") String articleId);
 
-    @GET("story/{articleId}/short-comments")
+    @GET("4/story/{articleId}/short-comments")
     Observable<CommentList> loadShortCommentData(@Path("articleId") String articleId);
 }
